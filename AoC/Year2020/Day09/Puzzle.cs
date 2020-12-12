@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AoC.Inputs;
+using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020
+namespace AoC.Year2020.Day09
 {
     [TestClass]
-    public class Day9
+    public class Puzzle
     {
         private long FindFirstOutlier(long[] input, int preamble)
         {
@@ -53,21 +53,21 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup1()
         {
-            var input = InputReader.ReadLongInput(2020, 9, 0);
+            var input = InputReader.ReadLongInput();
             Assert.AreEqual(127, FindFirstOutlier(input, 5));
         }
 
         [TestMethod]
         public void Puzzle1()
         {
-            var input = InputReader.ReadLongInput(2020, 9, 1);
+            var input = InputReader.ReadLongInput();
             Assert.AreEqual(36845998, FindFirstOutlier(input, 25));
         }
 
         [TestMethod]
         public void Setup2()
         {
-            var input = InputReader.ReadLongInput(2020, 9, 0);
+            var input = InputReader.ReadLongInput();
             var set = FindContiguousSet(input, 127);
 
             Assert.AreEqual(62, set.Min() + set.Max());
@@ -76,7 +76,7 @@ namespace AoC.Year2020
         [TestMethod]
         public void Puzzle2()
         {
-            var input = InputReader.ReadLongInput(2020, 9, 1);
+            var input = InputReader.ReadLongInput();
             var set = FindContiguousSet(input, 36845998);
 
             Assert.AreEqual(4830226, set.Min() + set.Max());

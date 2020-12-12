@@ -1,11 +1,11 @@
 ﻿using System;
-using AoC.Inputs;
+using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020
+namespace AoC.Year2020.Day12
 {
     [TestClass]
-    public class Day12
+    public class Puzzle
     {
         private static int Navigate1(string[] input)
         {
@@ -88,7 +88,7 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup1()
         {
-            var input = InputReader.ReadInput(2020, 12, 0);
+            var input = InputReader.ReadInput();
             var output = Navigate1(input);
             Assert.AreEqual(25, output);
         }
@@ -96,7 +96,7 @@ namespace AoC.Year2020
         [TestMethod]
         public void Puzzle1()
         {
-            var input = InputReader.ReadInput(2020, 12, 1);
+            var input = InputReader.ReadInput();
             var output = Navigate1(input);
             Assert.AreEqual(1007, output);
         }
@@ -178,7 +178,7 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup2()
         {
-            var input = InputReader.ReadInput(2020, 12, 0);
+            var input = InputReader.ReadInput();
             var output = Navigate2(input);
             Assert.AreEqual(286, output);
         }
@@ -186,7 +186,7 @@ namespace AoC.Year2020
         [TestMethod]
         public void Puzzle2()
         {
-            var input = InputReader.ReadInput(2020, 12, 1);
+            var input = InputReader.ReadInput();
             var output = Navigate2(input);
             Assert.AreEqual(41212, output);
         }

@@ -1,17 +1,17 @@
-using AoC.Inputs;
+using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020
+namespace AoC.Year2020.Day01
 {
     [TestClass]
-    public class Day1
+    public class Puzzle
     {
         #region input
 
         #endregion
 
         [TestMethod]
-        public void Test1()
+        public void Puzzle1()
         {
             var result = GetMultiplyFor2();
             Assert.AreEqual(result, 870331);
@@ -19,7 +19,7 @@ namespace AoC.Year2020
 
         private int GetMultiplyFor2()
         {
-            var input = InputReader.ReadIntInput(2020, 1, null);
+            var input = InputReader.ReadIntInput();
             var length = input.Length;
             for (var i = 0; i < length; i++)
                 for (var j = i; j < length; j++)
@@ -32,7 +32,7 @@ namespace AoC.Year2020
         }
 
         [TestMethod]
-        public void Test2()
+        public void Puzzle2()
         {
             var result = GetMultiplyFor3();
             Assert.AreEqual(result, 283025088);
@@ -40,7 +40,7 @@ namespace AoC.Year2020
 
         private int GetMultiplyFor3()
         {
-            var input = InputReader.ReadIntInput(2020, 1, null);
+            var input = InputReader.ReadIntInput();
             var length = input.Length;
             for (var i = 0; i < length; i++)
                 for (var j = i; j < length; j++)

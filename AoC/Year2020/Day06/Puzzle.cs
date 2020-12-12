@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using AoC.Inputs;
+using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020
+namespace AoC.Year2020.Day06
 {
     [TestClass]
-    public class Day6
+    public class Puzzle
     {
         private int CalculateSum1(string[] input)
         {
@@ -60,28 +60,28 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup1()
         {
-            var input = InputReader.ReadInput(2020, 6, 0);
+            var input = InputReader.ReadInput();
             Assert.AreEqual(11, CalculateSum1(input));
         }
 
         [TestMethod]
         public void Puzzle1()
         {
-            var input = InputReader.ReadInput(2020, 6, 1);
+            var input = InputReader.ReadInput();
             Assert.AreEqual(6532, CalculateSum1(input));
         }
 
         [TestMethod]
         public void Setup2()
         {
-            var input = InputReader.ReadInput(2020, 6, 0);
+            var input = InputReader.ReadInput();
             Assert.AreEqual(6, CalculateSum2(input));
         }
 
         [TestMethod]
         public void Puzzle2()
         {
-            var input = InputReader.ReadInput(2020, 6, 1);
+            var input = InputReader.ReadInput();
             Assert.AreEqual(3427, CalculateSum2(input));
         }
     }

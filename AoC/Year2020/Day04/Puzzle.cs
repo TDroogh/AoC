@@ -1,11 +1,11 @@
 using System.Linq;
-using AoC.Inputs;
+using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020
+namespace AoC.Year2020.Day04
 {
     [TestClass]
-    public class Day4
+    public class Puzzle
     {
         private class Passport
         {
@@ -22,28 +22,28 @@ namespace AoC.Year2020
             {
                 switch (prop)
                 {
-                    case "byr": 
+                    case "byr":
                         YearOfBirth = value;
                         return;
-                    case "iyr": 
+                    case "iyr":
                         YearOfIssuing = value;
                         return;
-                    case "eyr": 
+                    case "eyr":
                         YearOfExpiration = value;
                         return;
-                    case "hgt": 
+                    case "hgt":
                         Height = value;
                         return;
-                    case "hcl": 
+                    case "hcl":
                         HairColor = value;
                         return;
-                    case "ecl": 
+                    case "ecl":
                         EyeColor = value;
                         return;
-                    case "pid": 
+                    case "pid":
                         PassportId = value;
                         return;
-                    case "cid": 
+                    case "cid":
                         CountryId = value;
                         return;
                 }
@@ -61,7 +61,8 @@ namespace AoC.Year2020
                 var inches = Height.EndsWith("in");
                 var cm = Height.EndsWith("cm");
 
-                if(!inches && !cm) return false;
+                if (!inches && !cm)
+                    return false;
                 var value = int.Parse(Height.Substring(0, Height.Length - 2));
 
                 if (inches)
@@ -101,7 +102,8 @@ namespace AoC.Year2020
 
             public bool IsValid(bool validate)
             {
-                if (!IsComplete()) return false;
+                if (!IsComplete())
+                    return false;
 
                 if (validate)
                 {
@@ -136,9 +138,8 @@ namespace AoC.Year2020
             }
         }
 
-        private int ParsePassports(int puzzle, bool validate)
+        private int ParsePassports(string[] input, bool validate)
         {
-            var input = InputReader.ReadInput(2020, 4, puzzle);
             var count = 0;
             var passport = new Passport();
             foreach (var line in input)
@@ -158,7 +159,7 @@ namespace AoC.Year2020
                     passport.SetProperty(split[0], split[1]);
                 }
             }
-            
+
             if (passport.IsValid(validate))
                 count++;
 
@@ -168,25 +169,29 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup1()
         {
-            Assert.AreEqual(2, ParsePassports(0, false));
+            var input = InputReader.ReadInput("setup1");
+            Assert.AreEqual(2, ParsePassports(input, false));
         }
 
         [TestMethod]
         public void Puzzle1()
         {
-            Assert.AreEqual(192, ParsePassports(1, false));
+            var input = InputReader.ReadInput();
+            Assert.AreEqual(192, ParsePassports(input, false));
         }
-        
+
         [TestMethod]
         public void Setup2()
         {
-            Assert.AreEqual(4, ParsePassports(2, true));
+            var input = InputReader.ReadInput("setup2");
+            Assert.AreEqual(4, ParsePassports(input, true));
         }
-        
+
         [TestMethod]
         public void Puzzle2()
         {
-            Assert.AreEqual(101, ParsePassports(1, true));
+            var input = InputReader.ReadInput();
+            Assert.AreEqual(101, ParsePassports(input, true));
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Linq;
-using AoC.Inputs;
+using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020
+namespace AoC.Year2020.Day10
 {
     [TestClass]
-    public class Day10
+    public class Puzzle
     {
         private int GetMultiple(int[] input)
         {
@@ -39,14 +39,14 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup1()
         {
-            var input = InputReader.ReadIntInput(2020, 10, 0);
+            var input = InputReader.ReadIntInput("setup1");
             Assert.AreEqual(220, GetMultiple(input));
         }
 
         [TestMethod]
         public void Puzzle1()
         {
-            var input = InputReader.ReadIntInput(2020, 10, 1);
+            var input = InputReader.ReadIntInput();
             Assert.AreEqual(2475, GetMultiple(input));
         }
 
@@ -99,21 +99,21 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup2A()
         {
-            var input = InputReader.ReadIntInput(2020, 10, -1);
+            var input = InputReader.ReadIntInput("setup2");
             Assert.AreEqual(8, CountArrangements(input));
         }
 
         [TestMethod]
         public void Setup2B()
         {
-            var input = InputReader.ReadIntInput(2020, 10, 0);
+            var input = InputReader.ReadIntInput("setup1");
             Assert.AreEqual(19208, CountArrangements(input));
         }
 
         [TestMethod]
         public void Puzzle2()
         {
-            var input = InputReader.ReadIntInput(2020, 10, 1);
+            var input = InputReader.ReadIntInput();
             Assert.AreEqual(442136281481216, CountArrangements(input));
         }
     }

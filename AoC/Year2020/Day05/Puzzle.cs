@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using AoC.Inputs;
+using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020
+namespace AoC.Year2020.Day05
 {
     [TestClass]
-    public class Day5
+    public class Puzzle
     {
         private int GetSeatId(string input)
         {
@@ -32,7 +32,7 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup1()
         {
-            var input = InputReader.ReadInput(2020, 5, 0);
+            var input = InputReader.ReadInput();
             var max = input.Max(GetSeatId);
 
             Assert.AreEqual(820, max);
@@ -41,7 +41,7 @@ namespace AoC.Year2020
         [TestMethod]
         public void Puzzle1()
         {
-            var input = InputReader.ReadInput(2020, 5, 1);
+            var input = InputReader.ReadInput();
             var max = input.Max(GetSeatId);
 
             Assert.AreEqual(933, max);
@@ -50,12 +50,12 @@ namespace AoC.Year2020
         [TestMethod]
         public void Puzzle2()
         {
-            var input = InputReader.ReadInput(2020, 5, 1);
+            var input = InputReader.ReadInput();
             var ids = input.Select(GetSeatId).OrderBy(x => x).ToArray();
 
             var result = 0;
 
-            foreach(var id in GetNumbers(1025))
+            foreach (var id in GetNumbers(1025))
                 if (ids.Contains(id - 1) && ids.Contains(id + 1) && !ids.Contains(id))
                     result = id;
 

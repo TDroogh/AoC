@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AoC.Inputs;
+using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020
+namespace AoC.Year2020.Day07
 {
     [TestClass]
-    public class Day7
+    public class Puzzle
     {
         private class Bag
         {
@@ -15,7 +15,7 @@ namespace AoC.Year2020
 
             public static Bag Parse(string line)
             {
-                var bag = new Bag {Name = line.Split("bags")[0].Trim()};
+                var bag = new Bag { Name = line.Split("bags")[0].Trim() };
                 var contains = line.Split("contain")[1].Trim().TrimEnd('.');
 
                 bag.Carries = contains.Split(',')
@@ -30,7 +30,8 @@ namespace AoC.Year2020
             {
                 contains = contains.Trim();
 
-                if (contains.StartsWith("no")) return new KeyValuePair<string, int>("other", 0);
+                if (contains.StartsWith("no"))
+                    return new KeyValuePair<string, int>("other", 0);
 
                 var containPart = contains.Split("bag")[0].Trim();
                 var countPart = containPart.Split(" ")[0];
@@ -61,7 +62,7 @@ namespace AoC.Year2020
             public int BagsCarried(Bag[] allBags)
             {
                 var count = 0;
-                
+
                 foreach (var carry in Carries)
                 {
                     count += carry.Value;
@@ -77,7 +78,7 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup1()
         {
-            var input = InputReader.ReadInput(2020, 7, 0);
+            var input = InputReader.ReadInput();
             var bags = input.Select(Bag.Parse).ToArray();
 
             var bagToTest = "shiny gold";
@@ -89,7 +90,7 @@ namespace AoC.Year2020
         [TestMethod]
         public void Puzzle1()
         {
-            var input = InputReader.ReadInput(2020, 7, 1);
+            var input = InputReader.ReadInput();
             var bags = input.Select(Bag.Parse).ToArray();
 
             var bagToTest = "shiny gold";
@@ -101,7 +102,7 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup2()
         {
-            var input = InputReader.ReadInput(2020, 7, 0);
+            var input = InputReader.ReadInput();
             var bags = input.Select(Bag.Parse).ToArray();
 
             var bag = bags.Single(x => x.Name == "shiny gold");
@@ -113,7 +114,7 @@ namespace AoC.Year2020
         [TestMethod]
         public void Puzzle2()
         {
-            var input = InputReader.ReadInput(2020, 7, 1);
+            var input = InputReader.ReadInput();
             var bags = input.Select(Bag.Parse).ToArray();
 
             var bag = bags.Single(x => x.Name == "shiny gold");

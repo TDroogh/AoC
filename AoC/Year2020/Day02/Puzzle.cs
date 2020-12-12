@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
-using AoC.Inputs;
+using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020
+namespace AoC.Year2020.Day02
 {
     [TestClass]
-    public class Day2
+    public class Puzzle
     {
         [TestMethod]
         public void Setup1()
@@ -37,7 +37,7 @@ namespace AoC.Year2020
             var result = count >= minimum && count <= maximum;
             return result;
         }
-        
+
         [TestMethod]
         public void Setup2()
         {
@@ -59,26 +59,26 @@ namespace AoC.Year2020
 
             var policy = input.Split(":")[0];
             var first = int.Parse(policy.Split("-")[0]) - 1;
-            var second = int.Parse(policy.Split("-")[1].Split(' ')[0]) - 1; 
+            var second = int.Parse(policy.Split("-")[1].Split(' ')[0]) - 1;
             var countChar = policy.Split("-")[1].Split(' ')[1];
-            
+
             var pw = input.Split(":")[1].Trim();
             return pw[first].ToString() == countChar != (pw[second].ToString() == countChar);
         }
-        
+
         [TestMethod]
-        public void Test1()
+        public void Puzzle1()
         {
-            var input = InputReader.ReadInput(2020, 2, null);
+            var input = InputReader.ReadInput();
             var result = input.Count(VerifyPassword1);
 
             Assert.AreEqual(result, 493);
         }
-        
+
         [TestMethod]
-        public void Test2()
+        public void Puzzle2()
         {
-            var input = InputReader.ReadInput(2020, 2, null);
+            var input = InputReader.ReadInput();
             var result = input.Count(VerifyPassword2);
 
             Assert.AreEqual(result, 593);

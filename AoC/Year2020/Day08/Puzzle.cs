@@ -1,23 +1,22 @@
 ﻿using System.Collections.Generic;
-using AoC.Inputs;
+using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020
+namespace AoC.Year2020.Day08
 {
     [TestClass]
-    public class Day8
+    public class Puzzle
     {
-        private int CalculateAcc(int inputNr)
+        private int CalculateAcc(string[] input)
         {
-            var input = InputReader.ReadInput(2020, 8, inputNr);
-
             var acc = 0;
             var handledIndices = new List<int>();
             var i = 0;
 
             while (i < input.Length)
             {
-                if (handledIndices.Contains(i)) break;
+                if (handledIndices.Contains(i))
+                    break;
                 handledIndices.Add(i);
 
                 var line = input[i];
@@ -41,16 +40,16 @@ namespace AoC.Year2020
 
             return acc;
         }
-        private int CalculateAccFixed(int inputNr)
+
+        private int CalculateAccFixed(string[] input)
         {
-            var input = InputReader.ReadInput(2020, 8, inputNr);
             var fix = 0;
 
             while (true)
             {
                 var acc = 0;
                 var handledIndices = new List<int>();
-                var i = 0; 
+                var i = 0;
 
                 while (true)
                 {
@@ -59,7 +58,8 @@ namespace AoC.Year2020
                         return acc;
                     }
 
-                    if (handledIndices.Contains(i)) break;
+                    if (handledIndices.Contains(i))
+                        break;
                     handledIndices.Add(i);
 
                     var line = input[i];
@@ -68,8 +68,10 @@ namespace AoC.Year2020
                     var action = split[0];
                     if (i == fix)
                     {
-                        if (action == "nop") action = "jmp";
-                        if (action == "jmp") action = "nop";
+                        if (action == "nop")
+                            action = "jmp";
+                        if (action == "jmp")
+                            action = "nop";
                     }
 
                     if (action == "nop")
@@ -94,25 +96,29 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup1()
         {
-            Assert.AreEqual(5, CalculateAcc(0));
+            var input = InputReader.ReadInput();
+            Assert.AreEqual(5, CalculateAcc(input));
         }
 
         [TestMethod]
         public void Puzzle1()
         {
-            Assert.AreEqual(1859, CalculateAcc(1));
+            var input = InputReader.ReadInput();
+            Assert.AreEqual(1859, CalculateAcc(input));
         }
 
         [TestMethod]
         public void Setup2()
         {
-            Assert.AreEqual(8, CalculateAccFixed(0));
+            var input = InputReader.ReadInput();
+            Assert.AreEqual(8, CalculateAccFixed(input));
         }
 
         [TestMethod]
         public void Puzzle2()
         {
-            Assert.AreEqual(1235, CalculateAccFixed(1));
+            var input = InputReader.ReadInput();
+            Assert.AreEqual(1235, CalculateAccFixed(input));
         }
     }
 }

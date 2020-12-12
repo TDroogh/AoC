@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AoC.Inputs;
+using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020
+namespace AoC.Year2020.Day11
 {
     [TestClass]
-    public class Day11
+    public class Puzzle
     {
         private int CountSeats(char[,] input)
         {
@@ -94,14 +94,14 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup1()
         {
-            var input = InputReader.ReadArrayInput(2020, 11, 0);
+            var input = InputReader.ReadArrayInput();
             Assert.AreEqual(37, CountSeats(input));
         }
 
         [TestMethod]
         public void Puzzle1()
         {
-            var input = InputReader.ReadArrayInput(2020, 11, 1);
+            var input = InputReader.ReadArrayInput();
             Assert.AreEqual(2438, CountSeats(input));
         }
 
@@ -191,14 +191,14 @@ namespace AoC.Year2020
         [TestMethod]
         public void Setup2()
         {
-            var input = InputReader.ReadArrayInput(2020, 11, 0);
+            var input = InputReader.ReadArrayInput();
             Assert.AreEqual(26, CountSeats2(input));
         }
 
         [TestMethod]
         public void Puzzle2()
         {
-            var input = InputReader.ReadArrayInput(2020, 11, 1);
+            var input = InputReader.ReadArrayInput();
             Assert.AreEqual(2174, CountSeats2(input));
         }
     }

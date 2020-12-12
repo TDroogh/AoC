@@ -1,22 +1,24 @@
-﻿using AoC.Inputs;
+﻿using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2015
+namespace AoC.Year2015.Day01
 {
     [TestClass]
-    public class Day1
+    public class Puzzle
     {
         [TestMethod]
         public void Puzzle1()
         {
-            var input = InputReader.ReadInput(2015, 1, 1);
+            var input = InputReader.ReadInput();
             var line = input[0];
 
             var floor = 0;
-            foreach(var chr in line)
+            foreach (var chr in line)
             {
-                if (chr == '(') floor++;
-                else if (chr == ')') floor--;
+                if (chr == '(')
+                    floor++;
+                else if (chr == ')')
+                    floor--;
             }
 
             Assert.AreEqual(280, floor);
@@ -25,16 +27,18 @@ namespace AoC.Year2015
         [TestMethod]
         public void Puzzle2()
         {
-            var input = InputReader.ReadInput(2015, 1, 1);
+            var input = InputReader.ReadInput();
             var line = input[0];
 
             var floor = 0;
             var i = 0;
-            foreach(var chr in line)
+            foreach (var chr in line)
             {
                 i++;
-                if (chr == '(') floor++;
-                else if (chr == ')') floor--;
+                if (chr == '(')
+                    floor++;
+                else if (chr == ')')
+                    floor--;
                 if (floor == -1)
                     break;
             }

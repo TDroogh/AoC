@@ -1,21 +1,21 @@
-using AoC.Inputs;
+using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020
+namespace AoC.Year2020.Day03
 {
     [TestClass]
-    public class Day3
+    public class Puzzle
     {
         [TestMethod]
         public void Setup1()
         {
-            var input = InputReader.ReadArrayInput(2020, 3, 0);
+            var input = InputReader.ReadArrayInput();
             Assert.AreEqual(7, CountTrees(input, '#', 3, 1));
         }
         [TestMethod]
         public void Setup2()
         {
-            var input = InputReader.ReadArrayInput(2020, 3, 0);
+            var input = InputReader.ReadArrayInput();
 
             var r1 = CountTrees(input, '#', 1, 1);
             var r2 = CountTrees(input, '#', 3, 1);
@@ -43,18 +43,18 @@ namespace AoC.Year2020
 
             return treeCount;
         }
-        
+
         [TestMethod]
         public void Puzzle1()
         {
-            var input = InputReader.ReadArrayInput(2020, 3, 1, 2);
+            var input = InputReader.ReadArrayInput(2);
             Assert.AreEqual(145, CountTrees(input, '#', 3, 1));
         }
 
         [TestMethod]
         public void Puzzle2()
         {
-            var input = InputReader.ReadArrayInput(2020, 3, 1, 5);
+            var input = InputReader.ReadArrayInput(5);
 
             long r1 = CountTrees(input, '#', 1, 1);
             long r2 = CountTrees(input, '#', 3, 1);

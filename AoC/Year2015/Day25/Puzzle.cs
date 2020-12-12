@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2015
+namespace AoC.Year2015.Day25
 {
     [TestClass]
-    public class Day25
+    public class Puzzle
     {
         private long CalculateNext(long input)
         {
@@ -46,7 +46,7 @@ namespace AoC.Year2015
                     col++;
                 }
             }
-            
+
             Assert.AreEqual(19980801, input);
         }
     }
