@@ -63,8 +63,8 @@ namespace AoC.Year2015.Day03
         {
             var santaX = 0;
             var santaY = 0;
-            var roboX = 0;
-            var roboY = 0;
+            var robotX = 0;
+            var robotY = 0;
             var dict = new List<string> { "0,0" };
             var santa = true;
             foreach (var chr in input.SelectMany(z => z))
@@ -94,20 +94,20 @@ namespace AoC.Year2015.Day03
                     switch (chr)
                     {
                         case '>':
-                            roboX++;
+                            robotX++;
                             break;
                         case '<':
-                            roboX--;
+                            robotX--;
                             break;
                         case 'v':
-                            roboY--;
+                            robotY--;
                             break;
                         case '^':
-                            roboY++;
+                            robotY++;
                             break;
                     }
 
-                    dict.Add($"{roboX},{roboY}");
+                    dict.Add($"{robotX},{robotY}");
                 }
 
                 santa = !santa;
