@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,12 +24,11 @@ namespace AoC.Year2020.Day02
 
         private static bool VerifyPassword1(string input)
         {
-            Console.WriteLine(input);
-
             var policy = input.Split(":")[0];
-            var minimum = int.Parse(policy.Split("-")[0]);
-            var maximum = int.Parse(policy.Split("-")[1].Split(' ')[0]);
-            var countChar = policy.Split("-")[1].Split(' ')[1];
+            var policySplit = policy.Split("-");
+            var minimum = int.Parse(policySplit[0]);
+            var maximum = int.Parse(policySplit[1].Split(' ')[0]);
+            var countChar = policySplit[1].Split(' ')[1];
 
             var pw = input.Split(":")[1];
             var count = pw.Count(x => x.ToString() == countChar);
@@ -55,8 +53,6 @@ namespace AoC.Year2020.Day02
 
         private static bool VerifyPassword2(string input)
         {
-            Console.WriteLine(input);
-
             var policy = input.Split(":")[0];
             var first = int.Parse(policy.Split("-")[0]) - 1;
             var second = int.Parse(policy.Split("-")[1].Split(' ')[0]) - 1;

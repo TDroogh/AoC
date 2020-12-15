@@ -13,13 +13,13 @@ namespace AoC.Year2020.Day01
         [TestMethod]
         public void Puzzle1()
         {
-            var result = GetMultiplyFor2();
+            var input = InputReader.ReadIntInput();
+            var result = GetMultiplyFor2(input);
             Assert.AreEqual(result, 870331);
         }
 
-        private int GetMultiplyFor2()
+        private int GetMultiplyFor2(int[] input)
         {
-            var input = InputReader.ReadIntInput();
             var length = input.Length;
             for (var i = 0; i < length; i++)
                 for (var j = i; j < length; j++)
@@ -34,13 +34,13 @@ namespace AoC.Year2020.Day01
         [TestMethod]
         public void Puzzle2()
         {
-            var result = GetMultiplyFor3();
+            var input = InputReader.ReadIntInput();
+            var result = GetMultiplyFor3(input);
             Assert.AreEqual(result, 283025088);
         }
 
-        private int GetMultiplyFor3()
+        private int GetMultiplyFor3(int[] input)
         {
-            var input = InputReader.ReadIntInput();
             var length = input.Length;
             for (var i = 0; i < length; i++)
                 for (var j = i; j < length; j++)
