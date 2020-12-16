@@ -15,37 +15,8 @@ namespace AoC.Year2020.Day16
             public string Name { get; set; }
             public List<int> Values { get; set; }
             public int Index { get; set; }
-        }
 
-        private static void FindIndices(List<RuleSet> ruleSets, List<int[]> validTickets)
-        {
-            var k = 0;
-            while (ruleSets.Any(x => x.Index == -1))
-            {
-                for (var j = 0; j < ruleSets.Count; j++)
-                {
-                    var values = validTickets.Select(x => x[j]).ToArray();
-                    var sets = ruleSets.Where(x => x.Index == -1 && values.All(x.Values.Contains)).ToList();
-
-                    if (sets.Count != 1)
-                        continue;
-
-                    var set = sets.Single();
-                    set.Index = j;
-                }
-
-                if (k++ == ruleSets.Count)
-                    Assert.IsFalse(true);
-            }
-        }
-
-        private int SolvePuzzle1(string[] input)
-        {
-            var ruleSets = new List<RuleSet>();
-            var i = 0;
-            var line = input[i++];
-
-            while (string.IsNullOrWhiteSpace(line) == false)
+            public static RuleSet Parse(string line)
             {
                 var split = line.Split(':');
                 var name = split[0];
@@ -61,13 +32,48 @@ namespace AoC.Year2020.Day16
                         rangeResult.Add(j);
                 }
 
-                ruleSets.Add(new RuleSet
+                return new RuleSet
                 {
                     Name = name,
-                    Values = rangeResult,
-                    Index = -1
-                });
+                    Index = -1,
+                    Values = rangeResult
+                };
+            }
+        }
 
+        private static void FindIndices(List<RuleSet> ruleSets, List<int[]> validTickets)
+        {
+            var k = 0;
+            var valueCount = ruleSets.Count;
+            while (ruleSets.Any(x => x.Index == -1))
+            {
+                for (var j = 0; j < valueCount; j++)
+                {
+                    var values = validTickets.Select(x => x[j]).ToArray();
+                    var sets = ruleSets.Where(x => x.Index == -1 && values.All(x.Values.Contains)).ToList();
+
+                    if (sets.Count != 1)
+                        continue;
+
+                    var set = sets.Single();
+                    set.Index = j;
+                }
+
+                //Infinite loop protection
+                if (k++ == valueCount)
+                    Assert.IsFalse(true);
+            }
+        }
+
+        private int SolvePuzzle1(string[] input)
+        {
+            var ruleSets = new List<RuleSet>();
+            var i = 0;
+            var line = input[i++];
+
+            while (string.IsNullOrWhiteSpace(line) == false)
+            {
+                ruleSets.Add(RuleSet.Parse(line));
                 line = input[i++];
             }
 
