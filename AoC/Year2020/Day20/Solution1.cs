@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2020.Day20
 {
-    [TestClass]
+    //[TestClass]
     public class Solution1
     {
         public enum TileOrientation

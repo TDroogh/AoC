@@ -12,39 +12,116 @@ namespace AoC.Year2020.Day20
     {
         public enum TileOrientation
         {
-            Top,
+            Top = 1,
             Right,
             Bottom,
             Left
         }
 
+        public enum TilePosition
+        {
+            Undefined = 1,
+            Corner,
+            Edge,
+            Center
+        }
+
+        public class TileMatch
+        {
+            public TileOrientation Orientation { get; set; }
+            public TileVariant Other { get; set; }
+        }
+
+        public class TileVariant
+        {
+            public Tile Tile { get; set; }
+            public Tile Original { get; set; }
+            public int Rotation { get; set; }
+            public bool Flipped { get; set; }
+        }
+
         public class Tile
         {
-            public long Id { get; set; }
-            public int RibSize { get; set; }
-            public bool[,] Values { get; set; }
+            public Tile(long id, int ribSize, bool[,] values, TilePosition position, List<TileMatch> matches)
+            {
+                Id = id;
+                RibSize = ribSize;
+                Values = values;
+                Position = position;
+                Matches = matches;
+            }
+
+            public Tile(Tile other, bool[,] values) : this(other.Id, other.RibSize, values, other.Position, other.Matches)
+            {
+                Assert.AreNotEqual(other.Position, (TilePosition) 0);
+            }
+
+            public long Id { get; }
+            public int RibSize { get; }
+            public bool[,] Values { get; }
+            public TilePosition Position { get; set; }
+            public List<TileMatch> Matches { get; }
 
             public static Tile Parse(List<string> tileLines)
             {
                 var title = tileLines[0];
                 var id = title.Split(new[] { "Tile ", ":" }, StringSplitOptions.RemoveEmptyEntries).Single(x => string.IsNullOrWhiteSpace(x) == false);
-                var size = tileLines[1].Length;
-                var values = new bool[size, size];
-                for (var i = 1; i < tileLines.Count; i++)
+                var values = ParseValues(tileLines.Skip(1));
+
+                Assert.AreEqual(values.GetLength(0), values.GetLength(1));
+
+                return new Tile(long.Parse(id), values.GetLength(0), values, TilePosition.Undefined, new List<TileMatch>());
+            }
+
+            public static bool[,] ParseValues(IEnumerable<string> tileLines)
+            {
+                var lines = tileLines.Where(x => string.IsNullOrWhiteSpace(x) == false).ToList();
+                var size = lines[0].Length;
+                var values = new bool[lines.Count, size];
+                for (var i = 0; i < lines.Count; i++)
                 {
-                    var line = tileLines[i];
+                    var line = lines[i];
                     for (var j = 0; j < line.Length; j++)
                     {
-                        values[i - 1, j] = line[j] == '#';
+                        values[i, j] = line[j] == '#';
                     }
                 }
 
-                return new Tile
+                return values;
+            }
+
+            public IEnumerable<TileVariant> GetVariants()
+            {
+                foreach (var rotation in new[] { 0, 90, 180, 270 })
                 {
-                    Id = long.Parse(id),
-                    Values = values,
-                    RibSize = size
-                };
+                    var rotatedTile = RotateTile(this, rotation);
+
+                    yield return new TileVariant
+                    {
+                        Tile = rotatedTile,
+                        Original = this,
+                        Flipped = false,
+                        Rotation = rotation,
+                    };
+                    yield return new TileVariant
+                    {
+                        Tile = FlipTile(rotatedTile, true),
+                        Original = this,
+                        Flipped = true,
+                        Rotation = rotation,
+                    };
+                }
+            }
+
+            public static IEnumerable<bool[,]> GetVariants(bool[,] original)
+            {
+                foreach (var rotation in new[] { 0, 90, 180, 270 })
+                {
+                    var rotatedTile = RotateValues(original, rotation);
+
+                    yield return rotatedTile;
+                    yield return FlipValues(rotatedTile, true);
+                }
             }
 
             public bool[] GetEdge(TileOrientation orientation)
@@ -54,12 +131,7 @@ namespace AoC.Year2020.Day20
 
             public static Tile RotateTile(Tile tile, int angle)
             {
-                return new Tile
-                {
-                    Id = tile.Id,
-                    Values = RotateValues(tile.Values, angle),
-                    RibSize = tile.RibSize,
-                };
+                return new Tile(tile, RotateValues(tile.Values, angle));
             }
 
             public static bool[,] RotateValues(bool[,] values, int angle)
@@ -90,12 +162,7 @@ namespace AoC.Year2020.Day20
 
             public static Tile FlipTile(Tile tile, bool upDown)
             {
-                return new Tile
-                {
-                    Id = tile.Id,
-                    Values = FlipValues(tile.Values, upDown),
-                    RibSize = tile.RibSize,
-                };
+                return new Tile(tile, FlipValues(tile.Values, upDown));
             }
 
             public static bool[,] FlipValues(bool[,] values, bool upDown)
@@ -123,33 +190,15 @@ namespace AoC.Year2020.Day20
             {
                 var length = values.GetLength(0);
                 var edge = new bool[length];
-                switch (orientation)
-                {
-                    case TileOrientation.Top:
+                for (var i = 0; i < edge.Length; i++)
+                    edge[i] = orientation switch
                     {
-                        for (var i = 0; i < edge.Length; i++)
-                            edge[i] = values[0, i];
-                        break;
-                    }
-                    case TileOrientation.Bottom:
-                    {
-                        for (var i = 0; i < edge.Length; i++)
-                            edge[i] = values[length - 1, i];
-                        break;
-                    }
-                    case TileOrientation.Left:
-                    {
-                        for (var i = 0; i < edge.Length; i++)
-                            edge[i] = values[i, 0];
-                        break;
-                    }
-                    case TileOrientation.Right:
-                    {
-                        for (var i = 0; i < edge.Length; i++)
-                            edge[i] = values[i, length - 1];
-                        break;
-                    }
-                }
+                        TileOrientation.Top => values[0, i],
+                        TileOrientation.Bottom => values[length - 1, i],
+                        TileOrientation.Left => values[i, 0],
+                        TileOrientation.Right => values[i, length - 1],
+                        _ => edge[i]
+                    };
 
                 return edge;
             }
@@ -212,26 +261,37 @@ namespace AoC.Year2020.Day20
         private long SolvePuzzle1(string[] input)
         {
             var tiles = ReadTiles(input);
-            var cornerTile = new List<Tile>();
+            SortTiles(tiles);
+            return tiles.Where(x => x.Position == TilePosition.Corner).Aggregate(1L, (current, tile) => current * tile.Id);
+        }
+
+        private long SolvePuzzle1B(string[] input)
+        {
+            var tiles = ReadTiles(input);
+            SortTiles(tiles);
+            var grid = BuildGrid(tiles);
+
+            var l = grid.GetLength(0) - 1;
+            return grid[0, 0].Id * grid[0, l].Id * grid[l, 0].Id * grid[l, l].Id;
+        }
+
+        private static void SortTiles(List<Tile> tiles)
+        {
             foreach (var tile in tiles)
             {
                 var matched = 0;
                 foreach (var orientation in Enum.GetValues<TileOrientation>())
                 {
                     var hasMatch = false;
-
-                    foreach (var otherTile in tiles.Where(x => x != tile))
+                    foreach (var other in tiles.Where(x => x != tile))
                     {
-                        foreach (var rotation in new[] { 0, 90, 180, 270 })
+                        foreach (var match in other
+                            .GetVariants()
+                            .Where(x => tile.IsMatch(x.Tile, orientation))
+                            .Select(x => new TileMatch { Orientation = orientation, Other = x }))
                         {
-                            var rotatedTile = Tile.RotateTile(otherTile, rotation);
-
-                            if (tile.IsMatch(rotatedTile, orientation)
-                                || tile.IsMatch(Tile.FlipTile(rotatedTile, true), orientation)
-                                || tile.IsMatch(Tile.FlipTile(rotatedTile, false), orientation))
-                            {
-                                hasMatch = true;
-                            }
+                            hasMatch = true;
+                            tile.Matches.Add(match);
                         }
                     }
 
@@ -239,112 +299,57 @@ namespace AoC.Year2020.Day20
                         matched++;
                 }
 
-                Assert.IsTrue(matched >= 2, tile.Id.ToString());
+                Assert.IsTrue(matched >= 2 && matched <= 4, tile.Id.ToString());
 
-                if (matched == 2)
-                    cornerTile.Add(tile);
+                tile.Position = matched switch
+                {
+                    2 => TilePosition.Corner,
+                    3 => TilePosition.Edge,
+                    4 => TilePosition.Center,
+                    _ => default
+                };
             }
 
-            Assert.AreEqual(4, cornerTile.Count);
+            foreach (var match in tiles.SelectMany(x => x.Matches))
+                match.Other.Tile.Position = match.Other.Original.Position;
 
-            long product = 1;
-            foreach (var tile in cornerTile)
-                product *= tile.Id;
-            return product;
-        }
+            var centerRibSize = (int) Math.Sqrt(tiles.Count) - 2;
+            Assert.AreEqual(4, tiles.Count(x => x.Position == TilePosition.Corner));
+            Assert.AreEqual(4 * centerRibSize, tiles.Count(x => x.Position == TilePosition.Edge));
+            Assert.AreEqual(centerRibSize * centerRibSize, tiles.Count(x => x.Position == TilePosition.Center));
 
-        private static bool ValidateGrid(Tile[,] grid, out int score)
-        {
-            score = 0;
-            var maxScore = 0;
-            for (var i = 0; i < grid.GetLength(0); i++)
+            foreach (var cornerTile in tiles.Where(x => x.Position == TilePosition.Corner))
             {
-                for (var j = 0; j < grid.GetLength(1); j++)
+                Trace.WriteLine($"Tile {cornerTile.Id}----------");
+                foreach (var match in cornerTile.Matches)
                 {
-                    ValidateTileInGrid(grid, i, j, out var checks, out var matches);
-
-                    score += matches;
-                    maxScore += checks;
+                    Trace.WriteLine($"- {match.Orientation}: {match.Other.Original.Id} {match.Other.Rotation} degrees {(match.Other.Flipped ? "flipped" : "not flipped")}");
                 }
             }
-
-            return score == maxScore;
         }
 
-        private static bool ValidateTileInGrid(Tile[,] grid, int i, int j, out int checks, out int matches)
-        {
-            var tile = grid[i, j];
+        //private static IEnumerable<TileVariant> GetVariants(Tile tile)
+        //{
+        //    foreach (var rotation in new[] { 0, 90, 180, 270 })
+        //    {
+        //        var rotatedTile = Tile.RotateTile(tile, rotation);
 
-            var isLeft = i == 0;
-            var isRight = i == grid.GetLength(0) - 1;
-            var isTop = j == 0;
-            var isBottom = j == grid.GetLength(1) - 1;
-
-            checks = 0;
-            matches = 0;
-            if (!isLeft)
-            {
-                checks++;
-                var otherTile = grid[i - 1, j];
-                if (tile.IsMatch(otherTile, TileOrientation.Left))
-                    matches++;
-            }
-
-            if (!isRight)
-            {
-                checks++;
-                var otherTile = grid[i + 1, j];
-                if (tile.IsMatch(otherTile, TileOrientation.Right))
-                    matches++;
-            }
-
-            if (!isTop)
-            {
-                checks++;
-                var otherTile = grid[i, j - 1];
-                if (tile.IsMatch(otherTile, TileOrientation.Top))
-                    matches++;
-            }
-
-            if (!isBottom)
-            {
-                checks++;
-                var otherTile = grid[i, j + 1];
-                if (tile.IsMatch(otherTile, TileOrientation.Bottom))
-                    matches++;
-            }
-
-            return matches == checks;
-        }
-
-        private static long GetCornerProduct(Tile[,] grid)
-        {
-            var tileLength = grid[0, 0].RibSize;
-            for (var y = 0; y < grid.GetLength(1); y++)
-            {
-                Trace.WriteLine("");
-                for (var y2 = 0; y2 < tileLength; y2++)
-                {
-                    Trace.WriteLine("");
-                    for (var x = 0; x < grid.GetLength(0); x++)
-                    {
-                        var tile = grid[y, x];
-                        Trace.Write(" ");
-
-                        for (var x2 = 0; x2 < tileLength; x2++)
-                            Trace.Write(tile.Values[x2, y2] ? "#" : ".");
-                    }
-                }
-            }
-
-            var max = grid.GetLength(0) - 1;
-            var topLeft = grid[0, 0];
-            var topRight = grid[0, max];
-            var bottomLeft = grid[max, 0];
-            var bottomRight = grid[max, max];
-
-            return topLeft.Id * topRight.Id * bottomLeft.Id * bottomRight.Id;
-        }
+        //        yield return new TileVariant
+        //        {
+        //            Tile = rotatedTile,
+        //            Original = tile,
+        //            Flipped = false,
+        //            Rotation = rotation,
+        //        };
+        //        yield return new TileVariant
+        //        {
+        //            Tile = Tile.FlipTile(rotatedTile, true),
+        //            Original = tile,
+        //            Flipped = false,
+        //            Rotation = rotation,
+        //        };
+        //    }
+        //}
 
         [TestMethod]
         public void SetupReadTiles()
@@ -410,18 +415,18 @@ namespace AoC.Year2020.Day20
         }
 
         [TestMethod]
-        public void Setup0()
-        {
-            var input = InputReader.ReadInput("setup0");
-            var result = SolvePuzzle1(input);
-            Assert.AreEqual(4389, result);
-        }
-
-        [TestMethod]
         public void Setup1()
         {
             var input = InputReader.ReadInput();
             var result = SolvePuzzle1(input);
+            Assert.AreEqual(20899048083289, result);
+        }
+
+        [TestMethod]
+        public void Setup1B()
+        {
+            var input = InputReader.ReadInput();
+            var result = SolvePuzzle1B(input);
             Assert.AreEqual(20899048083289, result);
         }
 
@@ -433,13 +438,276 @@ namespace AoC.Year2020.Day20
             Assert.AreEqual(8425574315321, result);
         }
 
+        [TestMethod]
+        public void Puzzle1B()
+        {
+            var input = InputReader.ReadInput();
+            var result = SolvePuzzle1B(input);
+            Assert.AreEqual(8425574315321, result);
+        }
+
         #endregion
 
         #region Puzzle 2
 
+        private static IEnumerable<Tile> GetTilesInGrid(Tile[,] grid)
+        {
+            for (var i = 0; i < grid.GetLength(0); i++)
+            {
+                for (var j = 0; j < grid.GetLength(1); j++)
+                {
+                    if (grid[i, j] != null)
+                        yield return grid[i, j];
+                }
+            }
+        }
+
+        private static Tile[,] BuildGrid(List<Tile> tiles)
+        {
+            var gridSize = (int) Math.Sqrt(tiles.Count);
+            var grid = new Tile[gridSize, gridSize];
+
+            for (var i = 0; i < gridSize; i++)
+            {
+                for (var j = 0; j < gridSize; j++)
+                {
+                    if (i == 0 && j == 0)
+                    {
+                        var first = tiles.FirstOrDefault(x => x.Position == TilePosition.Corner);
+                        Assert.IsNotNull(first);
+                        var bottom = first.Matches.Any(x => x.Orientation == TileOrientation.Bottom);
+                        var right = first.Matches.Any(x => x.Orientation == TileOrientation.Right);
+
+                        var rotation = 0;
+                        if (!bottom && right)
+                            rotation = 90;
+                        if (!bottom && !right)
+                            rotation = 180;
+                        if (bottom && !right)
+                            rotation = 270;
+
+                        grid[i, j] = Tile.RotateTile(first, rotation);
+                        Trace.WriteLine($"{i},{j}: [{grid[i, j].Id}]");
+                    }
+                    else
+                    {
+                        var iPrev = i - 1;
+                        var jPrev = j;
+
+                        if (i == 0)
+                        {
+                            iPrev = i;
+                            jPrev = j - 1;
+                        }
+
+                        var isEdge = i == 0 || i == gridSize - 1 || j == 0 || j == gridSize - 1;
+                        var isCorner = (i == 0 || i == gridSize - 1) && (j == 0 || j == gridSize - 1);
+                        var type = isCorner
+                            ? TilePosition.Corner
+                            : isEdge
+                                ? TilePosition.Edge
+                                : TilePosition.Center;
+
+                        var previousTile = grid[iPrev, jPrev];
+                        var included = GetTilesInGrid(grid).Select(x => x.Id);
+
+                        var valid = false;
+
+                        foreach (var match in previousTile.Matches.Where(x => x.Other.Tile.Position == type && included.Contains(x.Other.Original.Id) == false))
+                        {
+                            foreach (var option in match.Other.Tile.GetVariants())
+                            {
+                                grid[i, j] = option.Tile;
+                                ValidateTileInGrid(grid, iPrev, jPrev, out var checks, out var matches);
+                                if (checks == matches)
+                                {
+                                    valid = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        Trace.WriteLine($"{i},{j}: [{grid[i, j].Id} ({grid[i, j].Position})] (prev was {grid[iPrev, jPrev].Id})");
+
+                        Assert.IsTrue(valid);
+                    }
+                }
+            }
+
+            Assert.IsTrue(ValidateGrid(grid, out _));
+            return grid;
+        }
+
+        private static bool ValidateGrid(Tile[,] grid, out int score)
+        {
+            score = 0;
+            var valid = true;
+            for (var i = 0; i < grid.GetLength(0); i++)
+            {
+                for (var j = 0; j < grid.GetLength(1); j++)
+                {
+                    valid &= ValidateTileInGrid(grid, i, j, out _, out var matches);
+
+                    score += matches;
+                }
+            }
+
+            return valid;
+        }
+
+        private static bool ValidateTileInGrid(Tile[,] grid, int i, int j, out int checks, out int matches)
+        {
+            var tile = grid[i, j];
+            if (tile == null)
+            {
+                checks = 1;
+                matches = 0;
+                return false;
+            }
+
+            var numChecks = 0;
+            var numMatches = 0;
+            var foundNull = false;
+
+            void ValidateOrientation(Tile other, TileOrientation orientation)
+            {
+                if (other == null)
+                {
+                    foundNull = true;
+                    return;
+                }
+
+                numChecks++;
+                if (tile.IsMatch(other, orientation))
+                    numMatches++;
+            }
+
+            if (i != 0)
+                ValidateOrientation(grid[i - 1, j], TileOrientation.Left);
+
+            if (i != grid.GetLength(0) - 1)
+                ValidateOrientation(grid[i + 1, j], TileOrientation.Right);
+
+            if (j != 0)
+                ValidateOrientation(grid[i, j - 1], TileOrientation.Top);
+
+            if (j != grid.GetLength(1) - 1)
+                ValidateOrientation(grid[i, j + 1], TileOrientation.Bottom);
+
+            checks = numChecks;
+            matches = numMatches;
+
+            return !foundNull && matches == checks;
+        }
+
+        private static bool[,] DrawGrid(Tile[,] grid)
+        {
+            var gridSize = grid.GetLength(0);
+            var tileSize = grid[0, 0].RibSize - 2;
+            var size = gridSize * tileSize;
+            var drawing = new bool[size, size];
+            Trace.WriteLine("-------------------");
+            for (var j1 = 0; j1 < gridSize; j1++)
+            {
+                for (var j2 = 0; j2 < tileSize; j2++)
+                {
+                    Trace.WriteLine("");
+                    for (var i1 = 0; i1 < gridSize; i1++)
+                    {
+                        var tile = grid[j1, i1];
+                        Trace.Write(" ");
+                        for (var i2 = 0; i2 < tileSize; i2++)
+                        {
+                            var val = tile.Values[i2 + 1, j2 + 1];
+                            drawing[i1 * tileSize + i2, j1 * tileSize + j2] = val;
+                            Trace.Write(val ? "#" : ".");
+                        }
+                    }
+                }
+
+                Trace.WriteLine("");
+            }
+
+            Draw(drawing);
+
+            return drawing;
+        }
+
+        private static void Draw(bool[,] drawing)
+        {
+            Trace.WriteLine("");
+            Trace.WriteLine("---------------------------------");
+            for (var j1 = 0; j1 < drawing.GetLength(1); j1++)
+            {
+                Trace.WriteLine("");
+                for (var i1 = 0; i1 < drawing.GetLength(0); i1++)
+                {
+                    var val = drawing[i1, j1];
+                    Trace.Write(val ? "#" : ".");
+                }
+            }
+        }
+
+        private int FindMonsters(bool[,] drawing)
+        {
+            var input = InputReader.ReadInput("monster");
+            var monster = Tile.ParseValues(input);
+            var tries = 0;
+            foreach (var drawVariant in Tile.GetVariants(drawing))
+            {
+                Trace.WriteLine("");
+                Trace.WriteLine("---------------------------------------------------");
+                Draw(drawVariant);
+                Trace.WriteLine("");
+                Trace.WriteLine("---------------------------------------------------");
+                Draw(monster);
+                Trace.WriteLine("");
+                Trace.WriteLine("---------------------------------------------------");
+                var count = 0;
+
+                for (var i = 0; i < drawVariant.GetLength(0) - monster.GetLength(0); i++)
+                    for (var j = 0; j < drawVariant.GetLength(1) - monster.GetLength(1); j++)
+                    {
+                        var matches = 0;
+                        for (var m1 = 0; m1 < monster.GetLength(0); m1++)
+                            for (var m2 = 0; m2 < monster.GetLength(1); m2++)
+                            {
+                                var m = monster[m1, m2];
+                                if (m && drawVariant[i + m1, j + m2])
+                                {
+                                    matches++;
+                                }
+                            }
+
+                        if (matches == 15)
+                            count++;
+                    }
+
+                Trace.WriteLine($"Found {count} monsters after {++tries} tries");
+
+                if (count != 0)
+                    return count;
+            }
+
+            return -1;
+        }
+
         private object SolvePuzzle2(string[] input)
         {
-            return 2;
+            var tiles = ReadTiles(input);
+            SortTiles(tiles);
+            var grid = BuildGrid(tiles);
+            var drawing = DrawGrid(grid);
+            var monsters = FindMonsters(drawing);
+            Assert.IsTrue(monsters > 0);
+
+            var count = 0;
+            for (var i = 0; i < drawing.GetLength(0); i++)
+                for (var j = 0; j < drawing.GetLength(1); j++)
+                    if (drawing[i, j])
+                        count++;
+
+            return count - 15 * monsters;
         }
 
         [TestMethod]
@@ -447,7 +715,7 @@ namespace AoC.Year2020.Day20
         {
             var input = InputReader.ReadInput();
             var result = SolvePuzzle2(input);
-            Assert.AreEqual(2, result);
+            Assert.AreEqual(273, result);
         }
 
         [TestMethod]
@@ -455,7 +723,7 @@ namespace AoC.Year2020.Day20
         {
             var input = InputReader.ReadInput();
             var result = SolvePuzzle2(input);
-            Assert.AreEqual(2, result);
+            Assert.AreEqual(1841, result);
         }
 
         #endregion
