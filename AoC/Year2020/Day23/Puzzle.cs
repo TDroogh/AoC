@@ -9,6 +9,116 @@ namespace AoC.Year2020.Day23
     [TestClass]
     public class Puzzle
     {
+        public class CupGame
+        {
+            private CupGame(int count)
+            {
+                Cups = new Dictionary<int, Cup>();
+            }
+
+            public Cup Start { get; set; }
+            public Dictionary<int, Cup> Cups { get; }
+
+            public static CupGame Parse(string input, int fill = 9)
+            {
+                var game = new CupGame(fill);
+
+                var previous = (Cup) null;
+                for (var i = 1; i <= fill; i++)
+                {
+                    var value = i - 1 < input.Length ? int.Parse(input[i - 1].ToString()) : i;
+                    var cup = new Cup
+                    {
+                        Value = value
+                    };
+                    game.Cups.Add(value, cup);
+                    if (previous != null)
+                        previous.Next = cup;
+                    else
+                        game.Start = cup;
+
+                    previous = cup;
+                }
+
+                if (previous != null)
+                    previous.Next = game.Start;
+
+                return game;
+            }
+
+
+            public Cup[] PickupThree(Cup after)
+            {
+                using var _ = new Timed("PickupThree");
+
+                var cups = GetCupsAfter(after, 3);
+                after.Next = cups[2].Next;
+                return cups;
+            }
+
+            public Cup[] GetCupsAfter(Cup after, int count)
+            {
+                using var _ = new Timed("ValuesAfter");
+
+                var result = new Cup[count];
+                var previous = after;
+                for (var i = 0; i < count; i++)
+                {
+                    result[i] = previous.Next;
+                    previous = previous.Next;
+                }
+
+                return result;
+            }
+
+            public int[] GetValuesAfter(Cup after, int count)
+            {
+                return GetCupsAfter(after, count).Select(x => x.Value).ToArray();
+            }
+
+            public void PutDownThree(Cup[] values, Cup after)
+            {
+                using var _ = new Timed("PutDownThree");
+                var nextValue = after.Value;
+                Cup nextCup;
+                while (true)
+                {
+                    nextValue--;
+                    if (nextValue <= 0)
+                        nextValue = Cups.Count;
+
+                    nextCup = Cups[nextValue];
+                    if (values.Contains(nextCup) == false)
+                        break;
+                }
+
+                //var afterCup = Cups[after];
+                values[^1].Next = nextCup.Next;
+                nextCup.Next = values[0];
+            }
+
+            public Cup GetNext(Cup after)
+            {
+                using var _ = new Timed("GetNext");
+
+                //var afterCup = Cups[after];
+
+                return after.Next;
+            }
+        }
+
+        public class Cup
+        {
+            public int Value { get; set; }
+            public Cup Next { get; set; }
+
+            /// <inheritdoc />
+            public override string ToString()
+            {
+                return $"Cup {Value}, Next {Next?.Value}";
+            }
+        }
+
         #region Puzzle 1
 
         public class Cups
@@ -145,21 +255,22 @@ namespace AoC.Year2020.Day23
         {
             Console.WriteLine($"Input: {input}. Iterations: {iterations}");
 
-            var cups = Cups.Parse(input);
-            var selected = cups.Order[0];
+            var cups = CupGame.Parse(input);
+            var selected = cups.Start;
 
             for (var i = 1; i <= iterations; i++)
             {
-                Console.WriteLine($"{i}:{cups.Order.Aggregate("", (p, n) => $"{p}{n}")}");
-
+                Console.WriteLine($"{i}:{cups.GetValuesAfter(selected, 9).Aggregate("", (p, n) => $"{p} {n}")}");
                 var nextThree = cups.PickupThree(selected);
-                Console.WriteLine($"Selected, {i}, Pick up {string.Join("", nextThree)}");
+                Console.WriteLine($"Selected {selected.Value}, Pick up {string.Join("", nextThree.Select(x => x.Value))}");
+                //Console.WriteLine($"{i}:{cups.GetValuesAfter(selected, 9).Aggregate("", (p, n) => $"{p} {n}")}");
                 cups.PutDownThree(nextThree, selected);
+                Console.WriteLine($"{i}:{cups.GetValuesAfter(selected, 9).Aggregate("", (p, n) => $"{p} {n}")}");
                 selected = cups.GetNext(selected);
             }
 
-            Console.WriteLine($"Final:{cups.Order.Aggregate("", (p, n) => $"{p}{n}")}");
-            return cups.GetValuesAfter(1, cups.Length - 1).Aggregate("", (p, n) => $"{p}{n}");
+            //Console.WriteLine($"Final:{cups.Order.Aggregate("", (p, n) => $"{p}{n}")}");
+            return cups.GetValuesAfter(cups.Cups[1], cups.Cups.Count - 1).Aggregate("", (p, n) => $"{p}{n}");
         }
 
         [TestMethod]
@@ -189,26 +300,22 @@ namespace AoC.Year2020.Day23
         {
             Console.WriteLine($"Input: {input}. Iterations: {iterations}");
 
-            var cups = Cups.Parse(input, numbers);
-            var selected = cups.Order[0];
+            var cups = CupGame.Parse(input, numbers);
+            var selected = cups.Start;
 
-            using (new Timed("Game"))
+            for (var i = 1; i <= iterations; i++)
             {
-                for (var i = 1; i <= iterations; i++)
-                {
-                    //Console.WriteLine($"{i}:{cups.Order.Aggregate("", (p, n) => $"{p}{n}")}");
-
-                    var nextThree = cups.PickupThree(selected);
-                    //Console.WriteLine($"Selected: {selected}, Pick up {string.Join(" ", nextThree)}");
-                    cups.PutDownThree(nextThree, selected);
-                    selected = cups.GetNext(selected);
-                }
+                //Console.WriteLine($"{i}:{cups.GetValuesAfter(selected, 9).Aggregate("", (p, n) => $"{p} {n}")}");
+                var nextThree = cups.PickupThree(selected);
+                //                Console.WriteLine($"Selected {selected.Value}, Pick up {string.Join("", nextThree.Select(x => x.Value))}");
+                //Console.WriteLine($"{i}:{cups.GetValuesAfter(selected, 9).Aggregate("", (p, n) => $"{p} {n}")}");
+                cups.PutDownThree(nextThree, selected);
+                //Console.WriteLine($"{i}:{cups.GetValuesAfter(selected, 9).Aggregate("", (p, n) => $"{p} {n}")}");
+                selected = cups.GetNext(selected);
             }
 
-            Console.WriteLine($"Last selected {selected}");
-            Console.WriteLine($"Final:{cups.Order.Take(11).Aggregate("", (p, n) => $"{p} {n}")}");
-            Console.WriteLine($"Last: {cups.Order.Skip(cups.Length - 11).Aggregate("", (p, n) => $"{p} {n}")}");
-            var result = cups.GetValuesAfter(1, 2);
+            Console.WriteLine($"Final:{cups.GetValuesAfter(selected, 10).Aggregate("", (p, n) => $"{p} {n}")}");
+            var result = cups.GetValuesAfter(cups.Cups[1], 2);
             Console.WriteLine($"{result[0]} * {result[1]}");
             return (long) result[0] * result[1];
         }
@@ -247,10 +354,10 @@ namespace AoC.Year2020.Day23
             Assert.AreEqual(SolvePuzzle2("389125467", 10_000_000, 1_000_000), 149245887792);
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void Puzzle2()
         {
-            Assert.AreEqual(SolvePuzzle2("362981754", 10_000_000, 1_000_000), 149245887792);
+            Assert.AreEqual(SolvePuzzle2("362981754", 10_000_000, 1_000_000), 12757828710);
         }
 
         #endregion
