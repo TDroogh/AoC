@@ -4,7 +4,7 @@ using System.Linq;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AoC.Year2020.Day
+namespace AoC.Year2020.Day22
 {
     [TestClass]
     public class Puzzle
