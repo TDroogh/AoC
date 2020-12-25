@@ -12,7 +12,7 @@ namespace AoC.Year2015.Day04
         private long SolvePuzzle1(string input, int zeroes = 5)
         {
             var alg = MD5.Create();
-            for (var i = 0; i < uint.MaxValue; i++)
+            for (long i = 0; i < uint.MaxValue; i++)
             {
                 var text = input + i;
                 var bytes = Encoding.UTF8.GetBytes(text);
