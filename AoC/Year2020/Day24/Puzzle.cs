@@ -18,9 +18,9 @@ namespace AoC.Year2020.Day24
             return handledTiles.Count(x => x.Value);
         }
 
-        private Dictionary<(decimal, int), bool> GetFloor(string[] input)
+        private Dictionary<(int, int), bool> GetFloor(string[] input)
         {
-            var handledTiles = new Dictionary<(decimal, int), bool>();
+            var handledTiles = new Dictionary<(int, int), bool>();
 
             foreach (var line in input)
             {
@@ -35,9 +35,9 @@ namespace AoC.Year2020.Day24
             return handledTiles;
         }
 
-        private (decimal, int) GetEnd(string line)
+        private (int, int) GetEnd(string line)
         {
-            var currentTile = (0m, 0);
+            var currentTile = (0, 0);
 
             foreach (var direction in GetDirections(line))
             {
@@ -47,31 +47,31 @@ namespace AoC.Year2020.Day24
             return currentTile;
         }
 
-        private static (decimal, int) GetTile(Orientation direction, (decimal, int) currentTile)
+        private static (int, int) GetTile(Orientation direction, (int, int) currentTile)
         {
             switch (direction)
             {
                 case Orientation.East:
-                    currentTile.Item1++;
+                    currentTile.Item1 += 2;
                     break;
                 case Orientation.West:
-                    currentTile.Item1--;
+                    currentTile.Item1 -= 2;
                     break;
                 case Orientation.NorthEast:
-                    currentTile.Item1 += 0.5m;
-                    currentTile.Item2++;
+                    currentTile.Item1 += 1;
+                    currentTile.Item2 += 2;
                     break;
                 case Orientation.SouthEast:
-                    currentTile.Item1 += 0.5m;
-                    currentTile.Item2--;
+                    currentTile.Item1 += 1;
+                    currentTile.Item2 -= 2;
                     break;
                 case Orientation.SouthWest:
-                    currentTile.Item1 -= 0.5m;
-                    currentTile.Item2--;
+                    currentTile.Item1 -= 1;
+                    currentTile.Item2 -= 2;
                     break;
                 case Orientation.NorthWest:
-                    currentTile.Item1 -= 0.5m;
-                    currentTile.Item2++;
+                    currentTile.Item1 -= 1;
+                    currentTile.Item2 += 2;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -156,7 +156,7 @@ namespace AoC.Year2020.Day24
             for (var day = 0; day < days; day++)
             {
                 floor = ExpandFloor(floor);
-                var newFloor = new Dictionary<(decimal, int), bool>();
+                var newFloor = new Dictionary<(int, int), bool>();
 
                 foreach (var (tileKey, isBlack) in floor)
                 {
@@ -183,9 +183,9 @@ namespace AoC.Year2020.Day24
             return floor.Count(x => x.Value);
         }
 
-        private Dictionary<(decimal, int), bool> ExpandFloor(Dictionary<(decimal, int), bool> oldFloor)
+        private Dictionary<(int, int), bool> ExpandFloor(Dictionary<(int, int), bool> oldFloor)
         {
-            var newFloor = new Dictionary<(decimal, int), bool>();
+            var newFloor = new Dictionary<(int, int), bool>();
 
             foreach (var tile in oldFloor)
             {
@@ -200,7 +200,7 @@ namespace AoC.Year2020.Day24
             return newFloor;
         }
 
-        private IEnumerable<(decimal, int)> GetAdjacentTiles((decimal, int) tile)
+        private IEnumerable<(int, int)> GetAdjacentTiles((int, int) tile)
         {
             foreach (var dir in Enum.GetValues<Orientation>())
                 yield return GetTile(dir, tile);

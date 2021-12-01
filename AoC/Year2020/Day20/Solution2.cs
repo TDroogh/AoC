@@ -328,29 +328,6 @@ namespace AoC.Year2020.Day20
             }
         }
 
-        //private static IEnumerable<TileVariant> GetVariants(Tile tile)
-        //{
-        //    foreach (var rotation in new[] { 0, 90, 180, 270 })
-        //    {
-        //        var rotatedTile = Tile.RotateTile(tile, rotation);
-
-        //        yield return new TileVariant
-        //        {
-        //            Tile = rotatedTile,
-        //            Original = tile,
-        //            Flipped = false,
-        //            Rotation = rotation,
-        //        };
-        //        yield return new TileVariant
-        //        {
-        //            Tile = Tile.FlipTile(rotatedTile, true),
-        //            Original = tile,
-        //            Flipped = false,
-        //            Rotation = rotation,
-        //        };
-        //    }
-        //}
-
         [TestMethod]
         public void SetupReadTiles()
         {
