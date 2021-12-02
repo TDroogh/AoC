@@ -6,6 +6,14 @@ namespace AoC.Year2021.Day02
     [TestClass]
     public class Puzzle
     {
+        private static class Results
+        {
+            public const int Setup1 = 150;
+            public const int Puzzle1 = 1_250_395;
+            public const int Setup2 = 900;
+            public const int Puzzle2 = 1_451_210_346;
+        }
+
         #region Puzzle 1
 
         private long SolvePuzzle1(string[] input)
@@ -38,7 +46,7 @@ namespace AoC.Year2021.Day02
         {
             var input = InputReader.ReadInput();
             var result = SolvePuzzle1(input);
-            Assert.AreEqual(150, result);
+            Assert.AreEqual(Results.Setup1, result);
         }
 
         [TestMethod]
@@ -46,7 +54,7 @@ namespace AoC.Year2021.Day02
         {
             var input = InputReader.ReadInput();
             var result = SolvePuzzle1(input);
-            Assert.AreEqual(1250395, result);
+            Assert.AreEqual(Results.Puzzle1, result);
         }
 
         #endregion
@@ -85,7 +93,7 @@ namespace AoC.Year2021.Day02
         {
             var input = InputReader.ReadInput();
             var result = SolvePuzzle2(input);
-            Assert.AreEqual(900, result);
+            Assert.AreEqual(Results.Setup2, result);
         }
 
         [TestMethod]
@@ -93,7 +101,7 @@ namespace AoC.Year2021.Day02
         {
             var input = InputReader.ReadInput();
             var result = SolvePuzzle2(input);
-            Assert.AreEqual(1451210346, result);
+            Assert.AreEqual(Results.Puzzle2, result);
         }
 
         #endregion
