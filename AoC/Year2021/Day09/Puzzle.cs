@@ -25,16 +25,8 @@ namespace AoC.Year2021.Day09
             {
                 for (var y = 0; y < input.GetLength(1); y++)
                 {
-                    var isLowest = true;
                     var value = input[x, y];
-                    if (x > 0 && value >= input[x - 1, y])
-                        isLowest = false;
-                    if (y > 0 && value >= input[x, y - 1])
-                        isLowest = false;
-                    if (x < input.GetLength(0) - 1 && value >= input[x + 1, y])
-                        isLowest = false;
-                    if (y < input.GetLength(1) - 1 && value >= input[x, y + 1])
-                        isLowest = false;
+                    var isLowest = GetAdjacentPoints(input, x, y).All(point => value < input[point.Item1, point.Item2]);
 
                     if (isLowest)
                         sum += 1 + int.Parse(value.ToString());
@@ -72,16 +64,8 @@ namespace AoC.Year2021.Day09
             {
                 for (var y = 0; y < input.GetLength(1); y++)
                 {
-                    var isLowest = true;
                     var value = input[x, y];
-                    if (x > 0 && value >= input[x - 1, y])
-                        isLowest = false;
-                    if (y > 0 && value >= input[x, y - 1])
-                        isLowest = false;
-                    if (x < input.GetLength(0) - 1 && value >= input[x + 1, y])
-                        isLowest = false;
-                    if (y < input.GetLength(1) - 1 && value >= input[x, y + 1])
-                        isLowest = false;
+                    var isLowest = GetAdjacentPoints(input, x, y).All(point => value < input[point.Item1, point.Item2]);
 
                     if (isLowest)
                     {
@@ -92,7 +76,7 @@ namespace AoC.Year2021.Day09
                     }
                 }
             }
-            
+
             basinSizes = basinSizes.OrderByDescending(i => i).Take(3).ToList();
             return basinSizes[0] * basinSizes[1] * basinSizes[2];
         }
@@ -106,17 +90,26 @@ namespace AoC.Year2021.Day09
             var value = input[x, y];
             iteration++;
 
-            foreach (var diff in new[] { (0, -1), (-1, 0), (0, 1), (1, 0) })
+            foreach (var (x2, y2) in GetAdjacentPoints(input, x, y))
             {
-                var x2 = x + diff.Item1;
-                var y2 = y + diff.Item2;
+                var value2 = input[x2, y2];
+
+                if (value < value2 && value2 != '9')
+                    FindBasin(input, x2, y2, points, iteration);
+            }
+        }
+
+        private IEnumerable<(int, int)> GetAdjacentPoints(char[,] input, int x, int y)
+        {
+            foreach (var (dx, dy) in new[] { (0, -1), (-1, 0), (0, 1), (1, 0) })
+            {
+                var x2 = x + dx;
+                var y2 = y + dy;
 
                 if (x2 < 0 || x2 >= input.GetLength(0) || y2 < 0 || y2 >= input.GetLength(1))
                     continue;
 
-                var value2 = input[x2, y2];
-                if (value < value2 && value2 != '9')
-                    FindBasin(input, x2, y2, points, iteration);
+                yield return (x2, y2);
             }
         }
 
