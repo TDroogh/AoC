@@ -49,5 +49,19 @@ namespace AoC.Util
 
             return result;
         }
+
+        public static int[,] ReadIntArrayInput(int repeat = 1, string suffix = null, [CallerMemberName] string member = null, [CallerFilePath] string filePath = null)
+        {
+            var lines = ReadInput(suffix, member, filePath);
+            var characters = lines[0].Length;
+
+            var result = new int[characters * repeat, lines.Length];
+            for (var l = 0; l < lines.Length; l++)
+                for (var r = 0; r < repeat; r++)
+                    for (var c = 0; c < characters; c++)
+                        result[c + r * characters, l] = int.Parse(lines[l][c].ToString());
+
+            return result;
+        }
     }
 }

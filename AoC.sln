@@ -11,6 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Template", "Template", "{46B2363B-644C-44B9-9214-03E9856E4BE9}"
+	ProjectSection(SolutionItems) = preProject
+		input-puzzle.txt = input-puzzle.txt
+		input-setup.txt = input-setup.txt
+		Puzzle.cs = Puzzle.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +31,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{46B2363B-644C-44B9-9214-03E9856E4BE9} = {32A0B3F0-F5B8-4C51-9ABF-96601A3BBC90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70BD73C8-3C51-43BA-BC61-B21F828F2F95}

@@ -18,7 +18,7 @@ namespace AoC.Year2021.Day09
 
         #region Puzzle 1
 
-        private object SolvePuzzle1(char[,] input)
+        private object SolvePuzzle1(int[,] input)
         {
             var sum = 0;
             for (var x = 0; x < input.GetLength(0); x++)
@@ -29,7 +29,7 @@ namespace AoC.Year2021.Day09
                     var isLowest = GetAdjacentPoints(input, x, y).All(point => value < input[point.Item1, point.Item2]);
 
                     if (isLowest)
-                        sum += 1 + int.Parse(value.ToString());
+                        sum += 1 + value;
                 }
             }
 
@@ -39,7 +39,7 @@ namespace AoC.Year2021.Day09
         [TestMethod]
         public void Setup1()
         {
-            var input = InputReader.ReadArrayInput();
+            var input = InputReader.ReadIntArrayInput();
             var result = SolvePuzzle1(input);
             Assert.AreEqual(Results.Setup1, result);
         }
@@ -47,7 +47,7 @@ namespace AoC.Year2021.Day09
         [TestMethod]
         public void Puzzle1()
         {
-            var input = InputReader.ReadArrayInput();
+            var input = InputReader.ReadIntArrayInput();
             var result = SolvePuzzle1(input);
             Assert.AreEqual(Results.Puzzle1, result);
         }
@@ -56,7 +56,7 @@ namespace AoC.Year2021.Day09
 
         #region Puzzle 2
 
-        private object SolvePuzzle2(char[,] input)
+        private object SolvePuzzle2(int[,] input)
         {
             var basinSizes = new List<int>();
 
@@ -81,7 +81,7 @@ namespace AoC.Year2021.Day09
             return basinSizes[0] * basinSizes[1] * basinSizes[2];
         }
 
-        private void FindBasin(char[,] input, int x, int y, List<(int, int)> points, int iteration = 0)
+        private void FindBasin(int[,] input, int x, int y, List<(int, int)> points, int iteration = 0)
         {
             if (iteration == 100)
                 return;
@@ -99,7 +99,7 @@ namespace AoC.Year2021.Day09
             }
         }
 
-        private IEnumerable<(int, int)> GetAdjacentPoints(char[,] input, int x, int y)
+        private IEnumerable<(int, int)> GetAdjacentPoints(int[,] input, int x, int y)
         {
             foreach (var (dx, dy) in new[] { (0, -1), (-1, 0), (0, 1), (1, 0) })
             {
@@ -116,7 +116,7 @@ namespace AoC.Year2021.Day09
         [TestMethod]
         public void Setup2()
         {
-            var input = InputReader.ReadArrayInput();
+            var input = InputReader.ReadIntArrayInput();
             var result = SolvePuzzle2(input);
             Assert.AreEqual(Results.Setup2, result);
         }
@@ -124,7 +124,7 @@ namespace AoC.Year2021.Day09
         [TestMethod]
         public void Puzzle2()
         {
-            var input = InputReader.ReadArrayInput();
+            var input = InputReader.ReadIntArrayInput();
             var result = SolvePuzzle2(input);
             Assert.AreEqual(Results.Puzzle2, result);
         }
