@@ -15,6 +15,11 @@ namespace AoC.Util
                 }
             }
         }
+        public static IEnumerable<T> GetAllValues<T>(this T[,] array)
+        {
+            foreach (var (x, y) in array.GetAllPoints())
+                yield return array[x, y];
+        }
 
         public static IEnumerable<(int, int)> GetAdjacentPoints<T>(this T[,] input, int x, int y, bool includeDiagonal)
         {
