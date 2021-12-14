@@ -33,7 +33,7 @@ namespace AoC.Year2021.Day14
             for (var c = 0; c < templateText.Length - 1; c++)
             {
                 var key = (templateText[c], templateText[c + 1]);
-                AddOrIncrement(templateCounts, key);
+                templateCounts.AddOrIncrement(key);
             }
 
             for (var i = 0; i < iterations; i++)
@@ -42,8 +42,8 @@ namespace AoC.Year2021.Day14
                 foreach (var (key, count) in templateCounts)
                 {
                     var rule = rules[key];
-                    AddOrIncrement(newCounts, (key.Item1, rule), count);
-                    AddOrIncrement(newCounts, (rule, key.Item2), count);
+                    newCounts.AddOrIncrement((key.Item1, rule), count);
+                    newCounts.AddOrIncrement((rule, key.Item2), count);
                 }
 
                 templateCounts = newCounts;
@@ -52,30 +52,24 @@ namespace AoC.Year2021.Day14
             var charCounts = new Dictionary<char, long>();
             foreach (var ((key1, key2), count) in templateCounts)
             {
-                AddOrIncrement(charCounts, key1, count);
-                AddOrIncrement(charCounts, key2, count);
+                charCounts.AddOrIncrement(key1, count);
+                charCounts.AddOrIncrement(key2, count);
             }
 
-            //All values are duplicated in the counts, (except for the first and the last one)
+            //All values are duplicated in the counts
             foreach (var (key, value) in charCounts)
                 charCounts[key] = value / 2;
-            AddOrIncrement(charCounts, templateText.First());
-            AddOrIncrement(charCounts, templateText.Last());
+
+            //The first and last characters are not duplicated, so add 1 for them 
+            charCounts.AddOrIncrement(templateText.First());
+            charCounts.AddOrIncrement(templateText.Last());
 
             var max = charCounts.Max(x => x.Value);
             var min = charCounts.Min(x => x.Value);
 
             return max - min;
         }
-
-        private static void AddOrIncrement<T>(Dictionary<T, long> templateCounts, T key, long incrementBy = 1)
-        {
-            if (templateCounts.ContainsKey(key))
-                templateCounts[key] += incrementBy;
-            else
-                templateCounts[key] = incrementBy;
-        }
-
+        
         [TestMethod]
         public void Setup1()
         {
