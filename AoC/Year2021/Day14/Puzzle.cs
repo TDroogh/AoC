@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,40 +13,67 @@ namespace AoC.Year2021.Day14
             public const long Setup1 = 1588;
             public const long Puzzle1 = 2375;
             public const long Setup2 = 2_188_189_693_529;
-            public const long Puzzle2 = 2;
+            public const long Puzzle2 = 1_976_896_901_756;
         }
 
         #region Puzzle 1
 
         private object SolvePuzzle(string[] input, int iterations)
         {
-            var template = input[0];
+            var templateText = input[0];
             var rules = new Dictionary<(char, char), char>();
             foreach (var line in input.Skip(2))
             {
                 var split = line.Split(" -> ");
                 rules.Add((split[0][0], split[0][1]), split[1][0]);
             }
+            
+            //Instead of evaluating all values 1 by 1, we evaluate the total count of each pair
+            var templateCounts = new Dictionary<(char, char), long>();
+            for (var c = 0; c < templateText.Length - 1; c++)
+            {
+                var key = (templateText[c], templateText[c + 1]);
+                AddOrIncrement(templateCounts, key);
+            }
 
             for (var i = 0; i < iterations; i++)
             {
-                var sb = new StringBuilder();
-
-                sb.Append(template[0]);
-                for (var c = 0; c < template.Length - 1; c++)
+                var newCounts = new Dictionary<(char, char), long>();
+                foreach (var (key, count) in templateCounts)
                 {
-                    var rule = rules[(template[c], template[c + 1])];
-                    sb.Append(rule);
-                    sb.Append(template[c + 1]);
+                    var rule = rules[key];
+                    AddOrIncrement(newCounts, (key.Item1, rule), count);
+                    AddOrIncrement(newCounts, (rule, key.Item2), count);
                 }
 
-                template = sb.ToString();
+                templateCounts = newCounts;
             }
 
-            var dict = template.GroupBy(x => x).ToDictionary(x => x.Key, y => y.LongCount());
-            var max = dict.Max(x => x.Value);
-            var min = dict.Min(x => x.Value);
+            var charCounts = new Dictionary<char, long>();
+            foreach (var ((key1, key2), count) in templateCounts)
+            {
+                AddOrIncrement(charCounts, key1, count);
+                AddOrIncrement(charCounts, key2, count);
+            }
+
+            //All values are duplicated in the counts, (except for the first and the last one)
+            foreach (var (key, value) in charCounts)
+                charCounts[key] = value / 2;
+            AddOrIncrement(charCounts, templateText.First());
+            AddOrIncrement(charCounts, templateText.Last());
+
+            var max = charCounts.Max(x => x.Value);
+            var min = charCounts.Min(x => x.Value);
+
             return max - min;
+        }
+
+        private static void AddOrIncrement<T>(Dictionary<T, long> templateCounts, T key, long incrementBy = 1)
+        {
+            if (templateCounts.ContainsKey(key))
+                templateCounts[key] += incrementBy;
+            else
+                templateCounts[key] = incrementBy;
         }
 
         [TestMethod]
@@ -74,7 +100,7 @@ namespace AoC.Year2021.Day14
         public void Setup2()
         {
             var input = InputReader.ReadInput();
-            var result = SolvePuzzle(input, 20);
+            var result = SolvePuzzle(input, 40);
             Assert.AreEqual(Results.Setup2, result);
         }
 
@@ -82,7 +108,7 @@ namespace AoC.Year2021.Day14
         public void Puzzle2()
         {
             var input = InputReader.ReadInput();
-            var result = SolvePuzzle(input, 10);
+            var result = SolvePuzzle(input, 40);
             Assert.AreEqual(Results.Puzzle2, result);
         }
 
