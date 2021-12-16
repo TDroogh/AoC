@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,17 +12,122 @@ namespace AoC.Year2021.Day16
     {
         private static class Results
         {
-            public const long Setup10 = 2021;
-            public const long Setup11 = 30;
-            public const long Setup12 = 6;
+            public const long Setup10 = 6;
+            public const long Setup11 = 9;
+            public const long Setup12 = 14;
             public const long Setup13 = 16;
             public const long Setup14 = 12;
             public const long Setup15 = 23;
             public const long Setup16 = 31;
-            public const long Puzzle1 = 1;
-            public const long Setup2 = 2;
-            public const long Puzzle2 = 2;
+            public const long Puzzle1 = 875;
+            public const long Setup20 = 2021;
+            public const long Setup27 = 3;
+            public const long Setup28 = 54;
+            public const long Setup29 = 7;
+            public const long Setup210 = 1;
+            public const long Setup211 = 0;
+            public const long Setup212 = 0;
+            public const long Setup213 = 1;
+            public const long Puzzle2 = 1264857437203;
         }
+
+
+        public abstract class Packet
+        {
+            public long Version { get; set; }
+            public long Type { get; set; }
+            public abstract IEnumerable<Packet> GetAllPackets();
+            public abstract long GetResult();
+
+            public static Packet Create(long version, long type)
+            {
+                return type == 4
+                    ? new LiteralPacket { Version = version, Type = type }
+                    : new OperatorPacket { Version = version, Type = type };
+            }
+        }
+
+        public class LiteralPacket : Packet
+        {
+            public long LiteralValue { get; set; }
+
+            public override IEnumerable<Packet> GetAllPackets()
+            {
+                yield return this;
+            }
+
+            /// <inheritdoc />
+            public override long GetResult()
+            {
+                return LiteralValue;
+            }
+
+            /// <inheritdoc />
+            public override string ToString()
+            {
+                return LiteralValue.ToString();
+            }
+        }
+
+        public class OperatorPacket : Packet
+        {
+            public OperatorPacket()
+            {
+                SubPackets = new List<Packet>();
+            }
+            
+            public List<Packet> SubPackets { get; }
+
+            public override IEnumerable<Packet> GetAllPackets()
+            {
+                yield return this;
+                foreach (var packet in SubPackets.SelectMany(x => x.GetAllPackets()))
+                    yield return packet;
+            }
+
+            /// <inheritdoc />
+            public override long GetResult()
+            {
+                return Type switch
+                {
+                    0 => SubPackets.Select(x => x.GetResult()).Sum(),
+                    1 => GetProduct(SubPackets),
+                    2 => SubPackets.Select(x => x.GetResult()).Min(),
+                    3 => SubPackets.Select(x => x.GetResult()).Max(),
+                    5 => SubPackets[0].GetResult() > SubPackets[1].GetResult() ? 1 : 0,
+                    6 => SubPackets[0].GetResult() < SubPackets[1].GetResult() ? 1 : 0,
+                    7 => SubPackets[0].GetResult() == SubPackets[1].GetResult() ? 1 : 0,
+                    _ => throw new ArgumentOutOfRangeException(nameof(Type), Type, "Invalid type")
+                };
+            }
+
+            private long GetProduct(IEnumerable<Packet> packets)
+            {
+                long product = 1;
+                foreach (var value in packets.Select(x => x.GetResult()))
+                    product *= value;
+                return product;
+            }
+
+            /// <inheritdoc />
+            public override string ToString()
+            {
+                var expression = Type switch
+                {
+                    0 => string.Join(" + ", SubPackets.Select(x => x.ToString())),
+                    1 => string.Join(" * ", SubPackets.Select(x => x.ToString())),
+                    2 => $"Min({string.Join(", ", SubPackets.Select(x => x.ToString()))})",
+                    3 => $"Max({string.Join(", ", SubPackets.Select(x => x.ToString()))})",
+                    5 => SubPackets[0] + " < " + SubPackets[1],
+                    6 => SubPackets[0] + " > " + SubPackets[1],
+                    7 => SubPackets[0] + " == " + SubPackets[1],
+                    _ => throw new ArgumentOutOfRangeException(nameof(Type), Type, "Invalid type")
+                };
+
+                return $"({expression})";
+            }
+        }
+
 
         #region Puzzle 1
 
@@ -80,7 +186,7 @@ namespace AoC.Year2021.Day16
             endIndex = 5;
 
             var fullBitString = new List<bool[]>();
-            while (endIndex -1 < input.Length)
+            while (endIndex - 1 < input.Length)
             {
                 var startIndex = endIndex - 5;
                 fullBitString.Add(input[(startIndex + 1)..endIndex]);
@@ -94,50 +200,61 @@ namespace AoC.Year2021.Day16
 
         private object SolvePuzzle1(string input)
         {
-            return GetValue(GetBinary(input), out _);
+            return ReadPacket(GetBinary(input), out _)
+                .GetAllPackets()
+                .Sum(x => x.Version);
         }
 
-        private static long GetValue(bool[] input, out int endIndex)
+        private static Packet ReadPacket(bool[] input, out int endIndex)
         {
             endIndex = 0;
-            //var version = GetDecimalValue(input[..3]);
+            var version = GetDecimalValue(input[..3]);
             var packetType = GetDecimalValue(input[3..6]);
+            var packet = Packet.Create(version, packetType);
 
             //Packet type 4 == literal value
-            if (packetType == 4)
+            if (packet is LiteralPacket literal)
             {
                 var result = ReadLiteralValue(input[6..], out endIndex);
                 endIndex += 6;
-                return result;
+                literal.LiteralValue = result;
             }
-
-            //Length type 0 = next 15 bits is the total number of bytes
-            //Length type 1 = next 11 bits is the number of sub-packets
-            var lengthTypeId = input[6];
-            long sum = 0;
-            if (lengthTypeId)
+            else if (packet is OperatorPacket op)
             {
-                var leftover = input[18..];
-                var numberOfPackages = GetDecimalValue(input[7..18]);
-                for (var p = 0; p < numberOfPackages; p++)
+                //Length type 0 = next 15 bits is the total number of bytes
+                //Length type 1 = next 11 bits is the number of sub-packets
+                var lengthTypeId = input[6];
+                if (lengthTypeId)
                 {
-                    sum += GetValue(leftover, out endIndex);
-                    leftover = leftover[endIndex..];
+                    var leftover = input;
+                    endIndex = 18;
+                    var subEndIndex = 18;
+                    var numberOfPackages = GetDecimalValue(input[7..18]);
+                    for (var p = 0; p < numberOfPackages; p++)
+                    {
+                        leftover = leftover[subEndIndex..];
+                        op.SubPackets.Add(ReadPacket(leftover, out subEndIndex));
+                        endIndex += subEndIndex;
+                    }
+                }
+                else
+                {
+                    var leftover = input;
+                    endIndex = 22;
+                    var subEndIndex = 22;
+                    var numberOfBytes = GetDecimalValue(input[7..22]);
+                    var bytesRead = 0;
+                    do
+                    {
+                        leftover = leftover[subEndIndex..];
+                        op.SubPackets.Add(ReadPacket(leftover, out subEndIndex));
+                        bytesRead += subEndIndex;
+                        endIndex += subEndIndex;
+                    } while (bytesRead < numberOfBytes);
                 }
             }
-            else
-            {
-                var leftover = input[22..];
-                var numberOfBytes = GetDecimalValue(input[7..22]);
-                while (endIndex < numberOfBytes)
-                {
-                    sum += GetValue(leftover, out endIndex);
-                    numberOfBytes -= endIndex;
-                    leftover = leftover[endIndex..];
-                }
-            }
 
-            return sum;
+            return packet;
         }
 
         [DataTestMethod]
@@ -160,12 +277,15 @@ namespace AoC.Year2021.Day16
             var arr = bits.Select(x => x == '1').ToArray();
             Assert.AreEqual(expectedValue, ReadLiteralValue(arr, out _));
         }
-        
+
         [DataTestMethod]
         [DataRow(0, Results.Setup10)]
         [DataRow(1, Results.Setup11)]
         [DataRow(2, Results.Setup12)]
         [DataRow(3, Results.Setup13)]
+        [DataRow(4, Results.Setup14)]
+        [DataRow(5, Results.Setup15)]
+        [DataRow(6, Results.Setup16)]
         public void Setup1(int line, long expected)
         {
             var input = InputReader.ReadInput();
@@ -184,24 +304,36 @@ namespace AoC.Year2021.Day16
 
         #region Puzzle 2
 
-        private object SolvePuzzle2(string[] input)
+        private object SolvePuzzle2(string input)
         {
-            return 2;
+            var packet = ReadPacket(GetBinary(input), out _);
+
+            Trace.WriteLine(packet);
+
+            return packet.GetResult();
         }
 
-        [TestMethod]
-        public void Setup2()
+        [DataTestMethod]
+        [DataRow(0, Results.Setup20)]
+        [DataRow(7, Results.Setup27)]
+        [DataRow(8, Results.Setup28)]
+        [DataRow(9, Results.Setup29)]
+        [DataRow(10, Results.Setup210)]
+        [DataRow(11, Results.Setup211)]
+        [DataRow(12, Results.Setup212)]
+        [DataRow(13, Results.Setup213)]
+        public void Setup2(int line, long expected)
         {
             var input = InputReader.ReadInput();
-            var result = SolvePuzzle2(input);
-            Assert.AreEqual(Results.Setup2, result);
+            var result = SolvePuzzle2(input[0]);
+            Assert.AreEqual(Results.Setup20, result);
         }
 
         [TestMethod]
         public void Puzzle2()
         {
             var input = InputReader.ReadInput();
-            var result = SolvePuzzle2(input);
+            var result = SolvePuzzle2(input[0]);
             Assert.AreEqual(Results.Puzzle2, result);
         }
 
