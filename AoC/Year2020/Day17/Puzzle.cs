@@ -136,7 +136,7 @@ namespace AoC.Year2020.Day17
 
             Trace.WriteLine("");
             Trace.WriteLine("Start");
-            PrintSpace2(space);
+            //PrintSpace2(space);
 
             for (var l = 1; l <= cycles; l++)
             {
@@ -157,7 +157,7 @@ namespace AoC.Year2020.Day17
 
                 Trace.WriteLine("");
                 Trace.WriteLine($"Iteration {l}");
-                PrintSpace2(space);
+                //PrintSpace2(space);
             }
 
             var sum = 0;
@@ -167,25 +167,25 @@ namespace AoC.Year2020.Day17
             return sum;
         }
 
-        private void PrintSpace2(bool[,,,] space)
-        {
-            //var zBase = (space.GetLength(2) - 1) / 2;
-            //for (var z = 0; z < space.GetLength(2); z++)
-            //{
-            //    Trace.WriteLine("------------------------");
-            //    Trace.WriteLine($"Z = {z - zBase}");
+        //private void PrintSpace2(bool[,,,] space)
+        //{
+        //    //var zBase = (space.GetLength(2) - 1) / 2;
+        //    //for (var z = 0; z < space.GetLength(2); z++)
+        //    //{
+        //    //    Trace.WriteLine("------------------------");
+        //    //    Trace.WriteLine($"Z = {z - zBase}");
 
-            //    for (var y = 0; y < space.GetLength(1); y++)
-            //    {
-            //        for (var x = 0; x < space.GetLength(0); x++)
-            //        {
-            //            Trace.Write(space[x, y, z] ? "#" : ".");
-            //        }
+        //    //    for (var y = 0; y < space.GetLength(1); y++)
+        //    //    {
+        //    //        for (var x = 0; x < space.GetLength(0); x++)
+        //    //        {
+        //    //            Trace.Write(space[x, y, z] ? "#" : ".");
+        //    //        }
 
-            //        Trace.WriteLine("");
-            //    }
-            //}
-        }
+        //    //        Trace.WriteLine("");
+        //    //    }
+        //    //}
+        //}
 
         private bool CalculateState2(bool[,,,] space, int x, int y, int z, int a, bool initialState)
         {

@@ -20,7 +20,7 @@ namespace AoC.Year2020.Day22
         private List<Player> ParsePlayers(string[] input)
         {
             Player current = null;
-            List<Player> players = new List<Player>();
+            var players = new List<Player>();
             foreach (var line in input)
             {
                 if (line.StartsWith("Player"))

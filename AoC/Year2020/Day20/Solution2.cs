@@ -511,21 +511,18 @@ namespace AoC.Year2020.Day20
                 }
             }
 
-            Assert.IsTrue(ValidateGrid(grid, out _));
+            Assert.IsTrue(ValidateGrid(grid));
             return grid;
         }
 
-        private static bool ValidateGrid(Tile[,] grid, out int score)
+        private static bool ValidateGrid(Tile[,] grid)
         {
-            score = 0;
             var valid = true;
             for (var i = 0; i < grid.GetLength(0); i++)
             {
                 for (var j = 0; j < grid.GetLength(1); j++)
                 {
-                    valid &= ValidateTileInGrid(grid, i, j, out _, out var matches);
-
-                    score += matches;
+                    valid &= ValidateTileInGrid(grid, i, j, out _, out _);
                 }
             }
 

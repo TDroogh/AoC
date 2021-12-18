@@ -11,7 +11,7 @@ namespace AoC.Year2020.Day23
     {
         public class CupGame
         {
-            private CupGame(int count)
+            private CupGame()
             {
                 Cups = new Dictionary<int, Cup>();
             }
@@ -21,7 +21,7 @@ namespace AoC.Year2020.Day23
 
             public static CupGame Parse(string input, int fill = 9)
             {
-                var game = new CupGame(fill);
+                var game = new CupGame();
 
                 var previous = (Cup) null;
                 for (var i = 1; i <= fill; i++)
@@ -120,103 +120,10 @@ namespace AoC.Year2020.Day23
         }
 
         #region Puzzle 1
-
-        public class Cups
-        {
-            private Cups(int count)
-            {
-                Order = new List<int>();
-            }
-
-            public int Length { get; set; }
-            public List<int> Order { get; }
-
-            public static Cups Parse(string input, int fill = 9)
-            {
-                var cups = new Cups(fill);
-
-                for (var i = 1; i <= fill; i++)
-                {
-                    if (i - 1 < input.Length)
-                        cups.Order.Add(int.Parse(input[i - 1].ToString()));
-                    else
-                        cups.Order.Add(i);
-                }
-
-                cups.Length = cups.Order.Count;
-                return cups;
-            }
-
-            public int[] PickupThree(int after)
-            {
-                using var _ = new Timed("PickupThree");
-
-                return GetValuesAfter(after, 3);
-            }
-
-            public int[] GetValuesAfter(int after, int count)
-            {
-                using var _ = new Timed("ValuesAfter");
-
-                var result = new int[count];
-                var i = Order.IndexOf(after) + 1;
-
-                if (i + count < Length)
-                {
-                    for (var j = 0; j < count; j++)
-                    {
-                        result[j] = Order[i + j];
-                    }
-
-                    Order.RemoveRange(i, count);
-                }
-                else
-                {
-                    for (var j = 0; j < count; j++)
-                    {
-                        if (i >= Order.Count)
-                            i = 0;
-                        result[j] = Order[i];
-                        Order.RemoveAt(i);
-                    }
-                }
-
-                return result;
-            }
-
-            public void PutDownThree(int[] values, int after)
-            {
-                using var _ = new Timed("PutDownThree");
-
-                var destination = after - 1;
-
-                var index = Order.IndexOf(destination);
-                while (index == -1)
-                {
-                    if (destination == 0)
-                        destination += Length + 1;
-
-                    destination--;
-
-                    index = Order.IndexOf(destination);
-                }
-
-                Order.InsertRange(index + 1, values);
-            }
-
-            public int GetNext(int after)
-            {
-                using var _ = new Timed("GetNext");
-
-                var i = Order.IndexOf(after);
-
-                return Order[(i + 1) % Length];
-            }
-        }
-
+        
         private class Timed : IDisposable
         {
-            private static Dictionary<string, long> _results = new Dictionary<string, long>();
+            private static readonly Dictionary<string, long> Results = new Dictionary<string, long>();
 
             private readonly string _name;
             private readonly Stopwatch _sw;
@@ -237,15 +144,15 @@ namespace AoC.Year2020.Day23
 
             public static void AddResult(string name, Stopwatch sw)
             {
-                if (_results.ContainsKey(name))
-                    _results[name] += sw.ElapsedMilliseconds;
+                if (Results.ContainsKey(name))
+                    Results[name] += sw.ElapsedMilliseconds;
                 else
-                    _results[name] = sw.ElapsedMilliseconds;
+                    Results[name] = sw.ElapsedMilliseconds;
             }
 
             public static void PrintResults()
             {
-                foreach (var kvp in _results)
+                foreach (var kvp in Results)
                     Console.WriteLine($"{kvp.Key}: {kvp.Value}");
             }
         }

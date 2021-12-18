@@ -57,7 +57,7 @@ namespace AoC.Year2020.Day13
             long maxMinutes = 1;
             var i = 0;
             var busIds = input[1].Split(',')
-                .ToDictionary(x => i++, x =>
+                .ToDictionary(_ => i++, x =>
                 {
                     if (x == "x")
                         return -1;

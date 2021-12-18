@@ -529,30 +529,5 @@ namespace AoC.Year2020.Day20
         }
 
         #endregion
-
-        #region Puzzle 2
-
-        private object SolvePuzzle2(string[] input)
-        {
-            return 2;
-        }
-
-        [TestMethod]
-        public void Setup2()
-        {
-            var input = InputReader.ReadInput();
-            var result = SolvePuzzle2(input);
-            Assert.AreEqual(2, result);
-        }
-
-        [TestMethod]
-        public void Puzzle2()
-        {
-            var input = InputReader.ReadInput();
-            var result = SolvePuzzle2(input);
-            Assert.AreEqual(2, result);
-        }
-
-        #endregion
     }
 }

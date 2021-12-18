@@ -23,12 +23,12 @@ namespace AoC.Year2021.Day04
 
             private BingoCard()
             {
-                Numbers = new int[CardSize,CardSize];
-                Marked = new bool[CardSize,CardSize];
+                _numbers = new int[CardSize,CardSize];
+                _marked = new bool[CardSize,CardSize];
             }
 
-            private int[,] Numbers { get; }
-            private bool[,] Marked { get; }
+            private readonly int[,] _numbers;
+            private readonly bool[,] _marked;
 
             public void AddNumber(int number)
             {
@@ -36,9 +36,9 @@ namespace AoC.Year2021.Day04
                 {
                     for (var j = 0; j < CardSize; j++)
                     {
-                        if (Numbers[i, j] == number)
+                        if (_numbers[i, j] == number)
                         {
-                            Marked[i, j] = true;
+                            _marked[i, j] = true;
                         }
                     }
                 }
@@ -48,10 +48,10 @@ namespace AoC.Year2021.Day04
             {
                 for (var i = 0; i < CardSize; i++)
                 {
-                    if (Marked[i, 0] && Marked[i, 1] && Marked[i, 2] && Marked[i, 3] && Marked[i, 4])
+                    if (_marked[i, 0] && _marked[i, 1] && _marked[i, 2] && _marked[i, 3] && _marked[i, 4])
                         return true;
 
-                    if (Marked[0, i] && Marked[1, i] && Marked[2, i] && Marked[3, i] && Marked[4, i])
+                    if (_marked[0, i] && _marked[1, i] && _marked[2, i] && _marked[3, i] && _marked[4, i])
                         return true;
                 }
 
@@ -66,8 +66,8 @@ namespace AoC.Year2021.Day04
                 {
                     for (var j = 0; j < CardSize; j++)
                     {
-                        if (Marked[i, j] == false)
-                            sum += Numbers[i, j];
+                        if (_marked[i, j] == false)
+                            sum += _numbers[i, j];
                     }
                 }
 
@@ -86,7 +86,7 @@ namespace AoC.Year2021.Day04
                     Assert.IsTrue(values.Length == CardSize);
                     for(var c = 0; c < CardSize; c++)
                     {
-                        card.Numbers[r, c] = values[c];
+                        card._numbers[r, c] = values[c];
                     }
                 }
 
