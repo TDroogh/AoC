@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AoC.Util
+﻿namespace AoC.Util
 {
     public static class ArrayHelper
     {
@@ -23,7 +20,7 @@ namespace AoC.Util
 
         public static IEnumerable<(int, int)> GetAdjacentPoints<T>(this T[,] input, int x, int y, bool includeDiagonal)
         {
-            foreach (var (dx, dy) in new[] { (0, -1), (-1, 0), (0, 1), (1, 0)})
+            foreach (var (dx, dy) in new[] { (0, -1), (-1, 0), (0, 1), (1, 0) })
             {
                 var x2 = x + dx;
                 var y2 = y + dy;

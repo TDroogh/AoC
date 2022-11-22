@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AoC.Util
+﻿namespace AoC.Util
 {
     public static class StringHelper
     {

@@ -1,16 +1,15 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
+// ReSharper disable ExplicitCallerInfoArgument
 namespace AoC.Util
 {
     public static class InputReader
     {
-        public static string[] ReadInput(string suffix = null, [CallerMemberName] string member = null, [CallerFilePath] string filePath = null)
+        public static string[] ReadInput(string? suffix = null, [CallerMemberName] string? member = null, [CallerFilePath] string? filePath = null)
         {
             if (member is null)
                 throw new ArgumentNullException(nameof(member));
+
             if (filePath is null)
                 throw new ArgumentNullException(nameof(filePath));
 
@@ -26,18 +25,17 @@ namespace AoC.Util
             return fs.ReadToEnd().Split("\r\n");
         }
 
-        public static int[] ReadIntInput(string suffix = null, [CallerMemberName] string member = null, [CallerFilePath] string filePath = null)
+        public static int[] ReadIntInput(string? suffix = null, [CallerMemberName] string? member = null, [CallerFilePath] string? filePath = null)
         {
-            // ReSharper disable ExplicitCallerInfoArgument
             return ReadInput(suffix, member, filePath).Select(int.Parse).ToArray();
         }
 
-        public static long[] ReadLongInput(string suffix = null, [CallerMemberName] string member = null, [CallerFilePath] string filePath = null)
+        public static long[] ReadLongInput(string? suffix = null, [CallerMemberName] string? member = null, [CallerFilePath] string? filePath = null)
         {
             return ReadInput(suffix, member, filePath).Select(long.Parse).ToArray();
         }
 
-        public static char[,] ReadArrayInput(int repeat = 1, string suffix = null, [CallerMemberName] string member = null, [CallerFilePath] string filePath = null)
+        public static char[,] ReadArrayInput(int repeat = 1, string? suffix = null, [CallerMemberName] string? member = null, [CallerFilePath] string? filePath = null)
         {
             var lines = ReadInput(suffix, member, filePath);
             var characters = lines[0].Length;
@@ -55,7 +53,7 @@ namespace AoC.Util
             return result;
         }
 
-        public static int[,] ReadIntArrayInput(int repeat = 1, string suffix = null, [CallerMemberName] string member = null, [CallerFilePath] string filePath = null)
+        public static int[,] ReadIntArrayInput(int repeat = 1, string? suffix = null, [CallerMemberName] string? member = null, [CallerFilePath] string? filePath = null)
         {
             var lines = ReadInput(suffix, member, filePath);
             var characters = lines[0].Length;
