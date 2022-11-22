@@ -1,4 +1,8 @@
-﻿namespace AoC.Util
+﻿using System.Text;
+
+#pragma warning disable S2368 // Public methods should not have multidimensional array parameters
+
+namespace AoC.Util
 {
     public static class ArrayHelper
     {
@@ -51,10 +55,10 @@
             Console.WriteLine("".PadLeft(array.GetLength(0) * 4, '='));
             for (var x = 0; x < array.GetLength(0); x++)
             {
-                var line = "";
+                var line = new StringBuilder();
                 for (var y = 0; y < array.GetLength(1); y++)
                 {
-                    line += $"[{array[y, x],2}]";
+                    line.Append($"[{array[y, x],2}]");
                 }
 
                 Console.WriteLine(line);

@@ -1,14 +1,10 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace AoC.Year2019.Day01
 {
-    [TestClass]
     public class Puzzle
     {
         #region Puzzle 1
 
-        private object SolvePuzzle1(int[] input)
+        private static int SolvePuzzle1(int[] input)
         {
             var total = 0;
 
@@ -21,27 +17,27 @@ namespace AoC.Year2019.Day01
             return total;
         }
 
-        [TestMethod]
+        [Fact]
         public void Setup1()
         {
             var input = InputReader.ReadIntInput();
             var result = SolvePuzzle1(input);
-            Assert.AreEqual(2 + 2 + 654 + 33583, result);
+            Assert.Equal(2 + 2 + 654 + 33583, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Puzzle1()
         {
             var input = InputReader.ReadIntInput();
             var result = SolvePuzzle1(input);
-            Assert.AreEqual(3361299, result);
+            Assert.Equal(3361299, result);
         }
 
         #endregion
 
         #region Puzzle 2
 
-        private object SolvePuzzle2(int[] input)
+        private static int SolvePuzzle2(int[] input)
         {
             var total = 0;
             foreach (var mass in input)
@@ -59,23 +55,23 @@ namespace AoC.Year2019.Day01
 
         private static int CalculateFuel(int mass)
         {
-            return (int)System.Math.Floor(mass / 3m) - 2;
+            return (int)Math.Floor(mass / 3m) - 2;
         }
 
-        [TestMethod]
+        [Fact]
         public void Setup2()
         {
             var input = InputReader.ReadIntInput();
             var result = SolvePuzzle2(input);
-            Assert.AreEqual(2 + 2 + 966 + 50346, result);
+            Assert.Equal(2 + 2 + 966 + 50346, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Puzzle2()
         {
             var input = InputReader.ReadIntInput();
             var result = SolvePuzzle2(input);
-            Assert.AreEqual(5039071, result);
+            Assert.Equal(5039071, result);
         }
 
         #endregion
