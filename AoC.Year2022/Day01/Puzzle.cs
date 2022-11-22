@@ -1,20 +1,20 @@
-namespace AoC.Year2022.Day01
+namespace AoC.Year2022.Day0
 {
     public class Puzzle
     {
         private static class Results
         {
-            public const int Setup1 = 4;
-            public const int Puzzle1 = 7;
-            public const int Setup2 = 4;
-            public const int Puzzle2 = 7;
+            public const int Setup1 = 1;
+            public const int Puzzle1 = 1;
+            public const int Setup2 = 2;
+            public const int Puzzle2 = 2;
         }
 
         #region Puzzle 1
 
-        private static int SolvePuzzle1(string[] input)
+        private object SolvePuzzle1(string[] input)
         {
-            return input.Length;
+            return 1;
         }
 
         [Fact]
@@ -37,9 +37,9 @@ namespace AoC.Year2022.Day01
 
         #region Puzzle 2
 
-        private static int SolvePuzzle2(string[] input)
+        private object SolvePuzzle2(string[] input)
         {
-            return input.Length;
+            return 2;
         }
 
         [Fact]

@@ -1,9 +1,5 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace AoC.Template.Day
+namespace AoC.Year2022.Day0
 {
-    [TestClass]
     public class Puzzle
     {
         private static class Results
@@ -21,20 +17,20 @@ namespace AoC.Template.Day
             return 1;
         }
 
-        [TestMethod]
+        [Fact]
         public void Setup1()
         {
             var input = InputReader.ReadInput();
             var result = SolvePuzzle1(input);
-            Assert.AreEqual(Results.Setup1, result);
+            Assert.Equal(Results.Setup1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Puzzle1()
         {
             var input = InputReader.ReadInput();
             var result = SolvePuzzle1(input);
-            Assert.AreEqual(Results.Puzzle1, result);
+            Assert.Equal(Results.Puzzle1, result);
         }
 
         #endregion
@@ -46,20 +42,20 @@ namespace AoC.Template.Day
             return 2;
         }
 
-        [TestMethod]
+        [Fact]
         public void Setup2()
         {
             var input = InputReader.ReadInput();
             var result = SolvePuzzle2(input);
-            Assert.AreEqual(Results.Setup2, result);
+            Assert.Equal(Results.Setup2, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Puzzle2()
         {
             var input = InputReader.ReadInput();
             var result = SolvePuzzle2(input);
-            Assert.AreEqual(Results.Puzzle2, result);
+            Assert.Equal(Results.Puzzle2, result);
         }
 
         #endregion
