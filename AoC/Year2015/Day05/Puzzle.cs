@@ -1,6 +1,6 @@
-using System.Linq;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace AoC.Year2015.Day05
 {
@@ -22,11 +22,11 @@ namespace AoC.Year2015.Day05
 
             var prev = '\0';
             if (line.Any(x =>
-            {
-                var result = x == prev;
-                prev = x;
-                return result;
-            }) == false)
+                {
+                    var result = x == prev;
+                    prev = x;
+                    return result;
+                }) == false)
                 return false;
 
             var forbiddenStrings = new[] { "ab", "cd", "pq", "xy" };

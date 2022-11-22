@@ -1,6 +1,6 @@
-﻿using System;
-using AoC.Util;
+﻿using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace AoC.Year2020.Day12
 {
@@ -29,7 +29,6 @@ namespace AoC.Year2020.Day12
                     case 'N':
                         y += count;
                         break;
-
                 }
             }
 
@@ -124,7 +123,6 @@ namespace AoC.Year2020.Day12
                     case 'N':
                         wayY += count;
                         break;
-
                 }
             }
 

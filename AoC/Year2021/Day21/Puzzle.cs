@@ -1,8 +1,8 @@
+using AoC.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2021.Day21
 {
@@ -78,7 +78,6 @@ namespace AoC.Year2021.Day21
                     player.CurrentPoints += (player.CurrentNumber - 1) % 10 + 1;
 
                 Console.WriteLine($"Turn {die.Counter}: Player {player.Number} has {player.CurrentPoints} points and is at position {player.CurrentNumber % 10}");
-
             }
 
             foreach (var player in players)
@@ -212,12 +211,12 @@ namespace AoC.Year2021.Day21
                         }
                     }
                 }
-                
+
                 Console.WriteLine($"Iteration {i}: {p1Wins} for player 1, {p2Wins} for player 2");
                 universes = newUniverses.Values.ToList();
                 Console.WriteLine($"Iteration {i}: {universes.Count} distinct universes left");
             }
-            
+
             return Math.Max(p1Wins, p2Wins);
         }
 

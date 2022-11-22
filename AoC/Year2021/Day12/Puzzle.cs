@@ -1,8 +1,8 @@
+using AoC.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2021.Day12
 {
@@ -96,17 +96,20 @@ namespace AoC.Year2021.Day12
 
                     if (to.Type != CaveType.Big)
                     {
-                        if(to.Type == CaveType.Start)
+                        if (to.Type == CaveType.Start)
                             continue;
 
                         var count = path.Split("-").Count(x => x == to.Name);
 
-                        if (count > 1)
-                            continue;
-                        if (count == 1 && doubleVisit)
-                            continue;
-                        if (count == 1 && !doubleVisit)
-                            doubleVisit = true;
+                        switch (count)
+                        {
+                            case > 1:
+                            case 1 when doubleVisit:
+                                continue;
+                            case 1:
+                                doubleVisit = true;
+                                break;
+                        }
                     }
 
                     totalCount += CalculateNumberOfPaths(to, final, path, doubleVisit);

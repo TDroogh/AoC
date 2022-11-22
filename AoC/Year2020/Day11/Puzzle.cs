@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AoC.Util;
+﻿using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AoC.Year2020.Day11
 {
@@ -20,6 +20,7 @@ namespace AoC.Year2020.Day11
                 equal = true;
                 totalCount = 0;
                 for (var i = 0; i < input.GetLength(0); i++)
+                {
                     for (var j = 0; j < input.GetLength(1); j++)
                     {
                         if (output[i, j] != input[i, j])
@@ -27,6 +28,7 @@ namespace AoC.Year2020.Day11
                         if (output[i, j] == '#')
                             totalCount++;
                     }
+                }
 
                 input = output;
             }
@@ -39,6 +41,7 @@ namespace AoC.Year2020.Day11
             var output = new char[input.GetLength(0), input.GetLength(1)];
 
             for (var i = 0; i < input.GetLength(0); i++)
+            {
                 for (var j = 0; j < input.GetLength(1); j++)
                 {
                     var current = input[i, j];
@@ -56,6 +59,7 @@ namespace AoC.Year2020.Day11
 
                     output[i, j] = changed;
                 }
+            }
 
             return output;
         }
@@ -117,6 +121,7 @@ namespace AoC.Year2020.Day11
                 equal = true;
                 totalCount = 0;
                 for (var i = 0; i < input.GetLength(0); i++)
+                {
                     for (var j = 0; j < input.GetLength(1); j++)
                     {
                         if (output[i, j] != input[i, j])
@@ -124,6 +129,7 @@ namespace AoC.Year2020.Day11
                         if (output[i, j] == '#')
                             totalCount++;
                     }
+                }
 
                 input = output;
             }
@@ -136,6 +142,7 @@ namespace AoC.Year2020.Day11
             var output = new char[input.GetLength(0), input.GetLength(1)];
 
             for (var i = 0; i < input.GetLength(0); i++)
+            {
                 for (var j = 0; j < input.GetLength(1); j++)
                 {
                     var current = input[i, j];
@@ -153,6 +160,7 @@ namespace AoC.Year2020.Day11
 
                     output[i, j] = changed;
                 }
+            }
 
             return output;
         }

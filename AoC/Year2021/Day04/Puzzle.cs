@@ -1,8 +1,8 @@
+using AoC.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2021.Day04
 {
@@ -19,12 +19,12 @@ namespace AoC.Year2021.Day04
 
         private class BingoCard
         {
-            private const int CardSize = 5;
+            public const int CardSize = 5;
 
             private BingoCard()
             {
-                _numbers = new int[CardSize,CardSize];
-                _marked = new bool[CardSize,CardSize];
+                _numbers = new int[CardSize, CardSize];
+                _marked = new bool[CardSize, CardSize];
             }
 
             private readonly int[,] _numbers;
@@ -84,7 +84,7 @@ namespace AoC.Year2021.Day04
                     var row = lines[r];
                     var values = row.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
                     Assert.IsTrue(values.Length == CardSize);
-                    for(var c = 0; c < CardSize; c++)
+                    for (var c = 0; c < CardSize; c++)
                     {
                         card._numbers[r, c] = values[c];
                     }
@@ -159,7 +159,7 @@ namespace AoC.Year2021.Day04
                     {
                         if (cards.Count == 1)
                             return number * card.GetUnmarkedSum();
-                        
+
                         cards.Remove(card);
                     }
                 }

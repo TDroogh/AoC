@@ -15,10 +15,10 @@ namespace AoC.Util
                 throw new ArgumentNullException(nameof(filePath));
 
             var directory = Path.GetDirectoryName(filePath)
-                ?? throw new ArgumentNullException(nameof(filePath));
+                            ?? throw new ArgumentNullException(nameof(filePath));
 
             var inputFile = Path.Combine(directory, "input-");
-            suffix ??= member.StartsWith("Setup") ? "setup" : "puzzle";
+            suffix ??= member.StartsWith("Setup", StringComparison.Ordinal) ? "setup" : "puzzle";
             inputFile += suffix;
             inputFile += ".txt";
 
@@ -28,6 +28,7 @@ namespace AoC.Util
 
         public static int[] ReadIntInput(string suffix = null, [CallerMemberName] string member = null, [CallerFilePath] string filePath = null)
         {
+            // ReSharper disable ExplicitCallerInfoArgument
             return ReadInput(suffix, member, filePath).Select(int.Parse).ToArray();
         }
 
@@ -43,9 +44,13 @@ namespace AoC.Util
 
             var result = new char[characters * repeat, lines.Length];
             for (var l = 0; l < lines.Length; l++)
+            {
                 for (var r = 0; r < repeat; r++)
+                {
                     for (var c = 0; c < characters; c++)
                         result[c + r * characters, l] = lines[l][c];
+                }
+            }
 
             return result;
         }
@@ -57,9 +62,13 @@ namespace AoC.Util
 
             var result = new int[characters * repeat, lines.Length];
             for (var l = 0; l < lines.Length; l++)
+            {
                 for (var r = 0; r < repeat; r++)
+                {
                     for (var c = 0; c < characters; c++)
                         result[c + r * characters, l] = int.Parse(lines[l][c].ToString());
+                }
+            }
 
             return result;
         }

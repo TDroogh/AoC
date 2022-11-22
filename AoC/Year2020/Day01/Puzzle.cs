@@ -22,11 +22,13 @@ namespace AoC.Year2020.Day01
         {
             var length = input.Length;
             for (var i = 0; i < length; i++)
+            {
                 for (var j = i; j < length; j++)
                 {
                     if (input[i] + input[j] == 2020)
                         return input[i] * input[j];
                 }
+            }
 
             return 0;
         }
@@ -43,12 +45,16 @@ namespace AoC.Year2020.Day01
         {
             var length = input.Length;
             for (var i = 0; i < length; i++)
+            {
                 for (var j = i; j < length; j++)
+                {
                     for (var k = j; k < length; k++)
                     {
                         if (input[i] + input[j] + input[k] == 2020)
                             return input[i] * input[j] * input[k];
                     }
+                }
+            }
             return 0;
         }
     }

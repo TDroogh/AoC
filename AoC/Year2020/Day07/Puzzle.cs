@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AoC.Util;
+﻿using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AoC.Year2020.Day07
 {
@@ -30,7 +31,7 @@ namespace AoC.Year2020.Day07
             {
                 contains = contains.Trim();
 
-                if (contains.StartsWith("no"))
+                if (contains.StartsWith("no", StringComparison.Ordinal))
                     return new KeyValuePair<string, int>("other", 0);
 
                 var containPart = contains.Split("bag")[0].Trim();

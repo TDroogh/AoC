@@ -1,9 +1,9 @@
+using AoC.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2020.Day20
 {
@@ -71,6 +71,7 @@ namespace AoC.Year2020.Day20
                     throw new ArgumentException();
 
                 for (var i = 0; i < size; i++)
+                {
                     for (var j = 0; j < size; j++)
                     {
                         var k = size - i - 1;
@@ -84,6 +85,7 @@ namespace AoC.Year2020.Day20
                             _ => values[i, j]
                         };
                     }
+                }
 
                 return newValues;
             }
@@ -104,6 +106,7 @@ namespace AoC.Year2020.Day20
                 var newValues = new bool[size, size];
 
                 for (var i = 0; i < size; i++)
+                {
                     for (var j = 0; j < size; j++)
                     {
                         var k = size - i - 1;
@@ -115,6 +118,7 @@ namespace AoC.Year2020.Day20
                             false => values[k, j]
                         };
                     }
+                }
 
                 return newValues;
             }
@@ -257,6 +261,7 @@ namespace AoC.Year2020.Day20
                 //Set/reset
                 var options = new List<(int, int)>();
                 for (var i = 0; i < length; i++)
+                {
                     for (var j = 0; j < length; j++)
                     {
                         var tile = oldGrid[i, j];
@@ -269,6 +274,7 @@ namespace AoC.Year2020.Day20
                                 options.Add((i, j));
                         }
                     }
+                }
 
                 var rnd = options[_rng.Next(0, options.Count)];
 
@@ -321,7 +327,6 @@ namespace AoC.Year2020.Day20
                     //Console.WriteLine(change);
                     break;
                 }
-
             } while (true);
 
             return newGrid;
@@ -422,7 +427,7 @@ namespace AoC.Year2020.Day20
 
         private static Tile[,] GetInitialGrid(List<Tile> tiles)
         {
-            var ribSize = (int) Math.Sqrt(tiles.Count);
+            var ribSize = (int)Math.Sqrt(tiles.Count);
             var grid = new Tile[ribSize, ribSize];
             var i = 0;
             foreach (var tile in tiles)
@@ -435,8 +440,10 @@ namespace AoC.Year2020.Day20
             }
 
             for (var x = 0; x < grid.GetLength(0); x++)
+            {
                 for (var y = 0; y < grid.GetLength(1); y++)
                     Assert.IsNotNull(grid[x, y]);
+            }
 
             return grid;
         }

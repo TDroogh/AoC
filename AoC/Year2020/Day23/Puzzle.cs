@@ -1,8 +1,8 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2020.Day23
 {
@@ -23,7 +23,7 @@ namespace AoC.Year2020.Day23
             {
                 var game = new CupGame();
 
-                var previous = (Cup) null;
+                var previous = (Cup)null;
                 for (var i = 1; i <= fill; i++)
                 {
                     var value = i - 1 < input.Length ? int.Parse(input[i - 1].ToString()) : i;
@@ -45,7 +45,6 @@ namespace AoC.Year2020.Day23
 
                 return game;
             }
-
 
             public Cup[] PickupThree(Cup after)
             {
@@ -120,7 +119,7 @@ namespace AoC.Year2020.Day23
         }
 
         #region Puzzle 1
-        
+
         private class Timed : IDisposable
         {
             private static readonly Dictionary<string, long> Results = new Dictionary<string, long>();
@@ -156,7 +155,6 @@ namespace AoC.Year2020.Day23
                     Console.WriteLine($"{kvp.Key}: {kvp.Value}");
             }
         }
-
 
         private string SolvePuzzle1(string input, int iterations)
         {
@@ -224,7 +222,7 @@ namespace AoC.Year2020.Day23
             Console.WriteLine($"Final:{cups.GetValuesAfter(selected, 10).Aggregate("", (p, n) => $"{p} {n}")}");
             var result = cups.GetValuesAfter(cups.Cups[1], 2);
             Console.WriteLine($"{result[0]} * {result[1]}");
-            return (long) result[0] * result[1];
+            return (long)result[0] * result[1];
         }
 
         [DataTestMethod]

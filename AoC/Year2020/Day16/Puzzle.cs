@@ -1,7 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AoC.Year2020.Day16
 {
@@ -208,7 +209,7 @@ namespace AoC.Year2020.Day16
             {
                 var value = myTicket[j];
                 var ruleSet = rulesDict[j];
-                if (ruleSet.Name.StartsWith("departure"))
+                if (ruleSet.Name.StartsWith("departure", StringComparison.Ordinal))
                 {
                     Assert.IsTrue(ruleSet.Values.Contains(value));
                     multiple *= value;

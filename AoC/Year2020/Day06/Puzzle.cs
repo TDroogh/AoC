@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AoC.Year2020.Day06
 {
@@ -49,7 +49,9 @@ namespace AoC.Year2020.Day06
                     first = false;
                 }
                 else
+                {
                     groupLetters = groupLetters.Intersect(line).ToList();
+                }
             }
 
             totalCount += groupLetters.Distinct().Count();

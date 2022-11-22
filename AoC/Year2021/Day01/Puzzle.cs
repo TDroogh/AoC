@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace AoC.Year2021.Day01
 {
@@ -12,7 +12,7 @@ namespace AoC.Year2021.Day01
         private static int SolvePuzzle(IReadOnlyList<int> input, int offset = 1)
         {
             var counter = 0;
-            for(var i = 0; i < input.Count - offset; i++)
+            for (var i = 0; i < input.Count - offset; i++)
                 if (input[i] < input[i + offset])
                     counter++;
 

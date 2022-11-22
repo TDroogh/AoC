@@ -30,7 +30,9 @@ namespace AoC.Year2020.Day18
                     totalLine += nextChar;
 
                     if (nextChar == '(')
+                    {
                         depth++;
+                    }
                     else if (nextChar == ')')
                     {
                         if (depth == 0)

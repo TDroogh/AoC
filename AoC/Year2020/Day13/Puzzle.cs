@@ -1,6 +1,6 @@
-using System.Linq;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace AoC.Year2020.Day13
 {
@@ -124,7 +124,7 @@ namespace AoC.Year2020.Day13
         {
             var input = InputReader.ReadInput();
             var result = SolvePuzzle2(input);
-            Assert.AreEqual((long) 1068781, result);
+            Assert.AreEqual((long)1068781, result);
         }
 
         [TestMethod]

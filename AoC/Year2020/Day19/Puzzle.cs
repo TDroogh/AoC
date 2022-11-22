@@ -1,8 +1,8 @@
+using AoC.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2020.Day19
 {
@@ -12,7 +12,6 @@ namespace AoC.Year2020.Day19
         private class Rule
         {
             public int Nr { get; set; }
-            public string RuleString { get; set; }
 
             public char Character { get; set; }
             public int[][] SubRuleSets { get; set; }
@@ -24,8 +23,7 @@ namespace AoC.Year2020.Day19
 
                 var result = new Rule
                 {
-                    Nr = ruleNr,
-                    RuleString = rule
+                    Nr = ruleNr
                 };
 
                 switch (rule)

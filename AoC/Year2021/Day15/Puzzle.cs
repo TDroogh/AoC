@@ -18,7 +18,7 @@ namespace AoC.Year2021.Day15
 
         private object SolvePuzzle1(int[,] input)
         {
-            var distances = new int[input.GetLength(0) , input.GetLength(1)];
+            var distances = new int[input.GetLength(0), input.GetLength(1)];
             foreach (var (x, y) in distances.GetAllPoints())
                 distances[x, y] = int.MaxValue;
             distances[0, 0] = 0;
@@ -72,7 +72,7 @@ namespace AoC.Year2021.Day15
         private object SolvePuzzle2(int[,] input)
         {
             var newInput = new int[input.GetLength(0) * 5, input.GetLength(1) * 5];
-            foreach (var (x, y)in input.GetAllPoints())
+            foreach (var (x, y) in input.GetAllPoints())
             {
                 var value = input[x, y];
                 for (var i = 0; i < 5; i++)

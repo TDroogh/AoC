@@ -1,8 +1,8 @@
+using AoC.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2020.Day14
 {
@@ -19,7 +19,7 @@ namespace AoC.Year2020.Day14
             foreach (var line in input)
             {
                 var split = line.Split("=");
-                if (line.StartsWith("mask"))
+                if (line.StartsWith("mask", StringComparison.Ordinal))
                 {
                     mask = split[1].Trim();
                 }
@@ -34,7 +34,7 @@ namespace AoC.Year2020.Day14
                         var j = 35 - i;
 
                         var maskValue = mask[j];
-                        var exp = (long) Math.Pow(2, i);
+                        var exp = (long)Math.Pow(2, i);
 
                         if (maskValue == 'x' || maskValue == 'X')
                         {
@@ -88,7 +88,7 @@ namespace AoC.Year2020.Day14
             foreach (var line in input)
             {
                 var split = line.Split("=");
-                if (line.StartsWith("mask"))
+                if (line.StartsWith("mask", StringComparison.Ordinal))
                 {
                     mask = split[1].Trim();
                 }
@@ -103,7 +103,7 @@ namespace AoC.Year2020.Day14
                         var j = 35 - i;
 
                         var maskValue = mask[j];
-                        var exp = (long) Math.Pow(2, i);
+                        var exp = (long)Math.Pow(2, i);
 
                         if (maskValue == 'x' || maskValue == 'X')
                         {
@@ -171,7 +171,7 @@ namespace AoC.Year2020.Day14
                     var j = 35 - i;
 
                     var maskValue = mask[j];
-                    var exp = (long) Math.Pow(2, i);
+                    var exp = (long)Math.Pow(2, i);
 
                     if (maskValue == '1')
                         sum += exp;

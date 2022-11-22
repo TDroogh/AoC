@@ -1,6 +1,7 @@
-using System.Linq;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 
 namespace AoC.Year2020.Day04
 {
@@ -16,7 +17,6 @@ namespace AoC.Year2020.Day04
             public string HairColor { get; set; }
             public string EyeColor { get; set; }
             public string PassportId { get; set; }
-            public string CountryId { get; set; }
 
             public void SetProperty(string prop, string value)
             {
@@ -44,7 +44,6 @@ namespace AoC.Year2020.Day04
                         PassportId = value;
                         return;
                     case "cid":
-                        CountryId = value;
                         return;
                 }
             }
@@ -58,8 +57,8 @@ namespace AoC.Year2020.Day04
 
             private bool ValidateHeight()
             {
-                var inches = Height.EndsWith("in");
-                var cm = Height.EndsWith("cm");
+                var inches = Height.EndsWith("in", StringComparison.Ordinal);
+                var cm = Height.EndsWith("cm", StringComparison.Ordinal);
 
                 if (!inches && !cm)
                     return false;

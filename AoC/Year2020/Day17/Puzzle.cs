@@ -1,6 +1,6 @@
-using System.Diagnostics;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 
 namespace AoC.Year2020.Day17
 {
@@ -13,8 +13,10 @@ namespace AoC.Year2020.Day17
         {
             var space = new bool[input.GetLength(0), input.GetLength(1), 1];
             for (var i = 0; i < input.GetLength(0); i++)
+            {
                 for (var j = 0; j < input.GetLength(1); j++)
                     space[i, j, 0] = input[i, j] == '#';
+            }
 
             Trace.WriteLine("");
             Trace.WriteLine("Start");
@@ -25,7 +27,9 @@ namespace AoC.Year2020.Day17
                 var newSpace = new bool[space.GetLength(0) + 2, space.GetLength(1) + 2, space.GetLength(2) + 2];
 
                 for (var i = -1; i < space.GetLength(0) + 1; i++)
+                {
                     for (var j = -1; j < space.GetLength(1) + 1; j++)
+                    {
                         for (var k = -1; k < space.GetLength(2) + 1; k++)
                         {
                             var currentState = false;
@@ -33,6 +37,8 @@ namespace AoC.Year2020.Day17
                                 currentState = space[i, j, k];
                             newSpace[i + 1, j + 1, k + 1] = CalculateState(space, i, j, k, currentState);
                         }
+                    }
+                }
 
                 space = newSpace;
 
@@ -93,7 +99,6 @@ namespace AoC.Year2020.Day17
                                     evaluated++;
                                 }
                             }
-
                         }
                     }
                 }
@@ -131,8 +136,10 @@ namespace AoC.Year2020.Day17
         {
             var space = new bool[input.GetLength(0), input.GetLength(1), 1, 1];
             for (var i = 0; i < input.GetLength(0); i++)
+            {
                 for (var j = 0; j < input.GetLength(1); j++)
                     space[i, j, 0, 0] = input[i, j] == '#';
+            }
 
             Trace.WriteLine("");
             Trace.WriteLine("Start");
@@ -143,8 +150,11 @@ namespace AoC.Year2020.Day17
                 var newSpace = new bool[space.GetLength(0) + 2, space.GetLength(1) + 2, space.GetLength(2) + 2, space.GetLength(3) + 2];
 
                 for (var i = -1; i < space.GetLength(0) + 1; i++)
+                {
                     for (var j = -1; j < space.GetLength(1) + 1; j++)
+                    {
                         for (var k = -1; k < space.GetLength(2) + 1; k++)
+                        {
                             for (var m = -1; m < space.GetLength(3) + 1; m++)
                             {
                                 var currentState = false;
@@ -152,6 +162,9 @@ namespace AoC.Year2020.Day17
                                     currentState = space[i, j, k, m];
                                 newSpace[i + 1, j + 1, k + 1, m + 1] = CalculateState2(space, i, j, k, m, currentState);
                             }
+                        }
+                    }
+                }
 
                 space = newSpace;
 
@@ -218,7 +231,6 @@ namespace AoC.Year2020.Day17
                                     }
                                 }
                             }
-
                         }
                     }
                 }

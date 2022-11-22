@@ -1,6 +1,6 @@
-using System;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace AoC.Year2021.Day17
 {
@@ -100,7 +100,6 @@ namespace AoC.Year2021.Day17
             }
         }
 
-
         #region Puzzle 1
 
         private int SolvePuzzle1(string[] input)
@@ -159,7 +158,7 @@ namespace AoC.Year2021.Day17
         #endregion
 
         #region Puzzle 2
-        
+
         private object SolvePuzzle2(string[] input)
         {
             var target = Target.Parse(input[0]);

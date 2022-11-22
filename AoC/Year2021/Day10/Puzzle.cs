@@ -1,8 +1,8 @@
+using AoC.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2021.Day10
 {
@@ -35,7 +35,9 @@ namespace AoC.Year2021.Day10
                 foreach (var chr in line)
                 {
                     if ("([{<".Contains(chr))
+                    {
                         stack.Push(chr);
+                    }
                     else
                     {
                         var expectedChr = stack.Peek() switch
@@ -98,7 +100,9 @@ namespace AoC.Year2021.Day10
                 foreach (var chr in line)
                 {
                     if ("([{<".Contains(chr))
+                    {
                         stack.Push(chr);
+                    }
                     else
                     {
                         var expectedChr = stack.Peek() switch

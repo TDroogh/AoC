@@ -1,9 +1,9 @@
+using AoC.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2020.Day20
 {
@@ -53,7 +53,7 @@ namespace AoC.Year2020.Day20
 
             public Tile(Tile other, bool[,] values) : this(other.Id, other.RibSize, values, other.Position, other.Matches)
             {
-                Assert.AreNotEqual(other.Position, (TilePosition) 0);
+                Assert.AreNotEqual(other.Position, (TilePosition)0);
             }
 
             public long Id { get; }
@@ -143,6 +143,7 @@ namespace AoC.Year2020.Day20
                     throw new ArgumentException();
 
                 for (var i = 0; i < size; i++)
+                {
                     for (var j = 0; j < size; j++)
                     {
                         var k = size - i - 1;
@@ -156,6 +157,7 @@ namespace AoC.Year2020.Day20
                             _ => values[i, j]
                         };
                     }
+                }
 
                 return newValues;
             }
@@ -171,6 +173,7 @@ namespace AoC.Year2020.Day20
                 var newValues = new bool[size, size];
 
                 for (var i = 0; i < size; i++)
+                {
                     for (var j = 0; j < size; j++)
                     {
                         var k = size - i - 1;
@@ -182,6 +185,7 @@ namespace AoC.Year2020.Day20
                             false => values[k, j]
                         };
                     }
+                }
 
                 return newValues;
             }
@@ -286,9 +290,9 @@ namespace AoC.Year2020.Day20
                     foreach (var other in tiles.Where(x => x != tile))
                     {
                         foreach (var match in other
-                            .GetVariants()
-                            .Where(x => tile.IsMatch(x.Tile, orientation))
-                            .Select(x => new TileMatch { Orientation = orientation, Other = x }))
+                                     .GetVariants()
+                                     .Where(x => tile.IsMatch(x.Tile, orientation))
+                                     .Select(x => new TileMatch { Orientation = orientation, Other = x }))
                         {
                             hasMatch = true;
                             tile.Matches.Add(match);
@@ -313,7 +317,7 @@ namespace AoC.Year2020.Day20
             foreach (var match in tiles.SelectMany(x => x.Matches))
                 match.Other.Tile.Position = match.Other.Original.Position;
 
-            var centerRibSize = (int) Math.Sqrt(tiles.Count) - 2;
+            var centerRibSize = (int)Math.Sqrt(tiles.Count) - 2;
             Assert.AreEqual(4, tiles.Count(x => x.Position == TilePosition.Corner));
             Assert.AreEqual(4 * centerRibSize, tiles.Count(x => x.Position == TilePosition.Edge));
             Assert.AreEqual(centerRibSize * centerRibSize, tiles.Count(x => x.Position == TilePosition.Center));
@@ -441,7 +445,7 @@ namespace AoC.Year2020.Day20
 
         private static Tile[,] BuildGrid(List<Tile> tiles)
         {
-            var gridSize = (int) Math.Sqrt(tiles.Count);
+            var gridSize = (int)Math.Sqrt(tiles.Count);
             var grid = new Tile[gridSize, gridSize];
 
             for (var i = 0; i < gridSize; i++)
@@ -640,10 +644,12 @@ namespace AoC.Year2020.Day20
                 var count = 0;
 
                 for (var i = 0; i < drawVariant.GetLength(0) - monster.GetLength(0); i++)
+                {
                     for (var j = 0; j < drawVariant.GetLength(1) - monster.GetLength(1); j++)
                     {
                         var matches = 0;
                         for (var m1 = 0; m1 < monster.GetLength(0); m1++)
+                        {
                             for (var m2 = 0; m2 < monster.GetLength(1); m2++)
                             {
                                 var m = monster[m1, m2];
@@ -652,10 +658,12 @@ namespace AoC.Year2020.Day20
                                     matches++;
                                 }
                             }
+                        }
 
                         if (matches == 15)
                             count++;
                     }
+                }
 
                 Trace.WriteLine($"Found {count} monsters after {++tries} tries");
 
@@ -677,9 +685,11 @@ namespace AoC.Year2020.Day20
 
             var count = 0;
             for (var i = 0; i < drawing.GetLength(0); i++)
+            {
                 for (var j = 0; j < drawing.GetLength(1); j++)
                     if (drawing[i, j])
                         count++;
+            }
 
             return count - 15 * monsters;
         }

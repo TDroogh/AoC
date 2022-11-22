@@ -1,8 +1,8 @@
+using AoC.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2020.Day22
 {
@@ -23,7 +23,7 @@ namespace AoC.Year2020.Day22
             var players = new List<Player>();
             foreach (var line in input)
             {
-                if (line.StartsWith("Player"))
+                if (line.StartsWith("Player", StringComparison.Ordinal))
                 {
                     Assert.IsNull(current);
                     current = new Player

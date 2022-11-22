@@ -1,7 +1,7 @@
-using System;
-using System.Linq;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 
 namespace AoC.Year2021.Day03
 {
@@ -68,7 +68,6 @@ namespace AoC.Year2021.Day03
 
         private object SolvePuzzle2(string[] input)
         {
-            
             var co2ScrubberRating = GetCo2Rating(input);
             var oxygenGeneratorRating = GetOxygenRating(input);
 

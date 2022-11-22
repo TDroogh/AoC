@@ -1,7 +1,7 @@
-using System;
-using System.Linq;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 
 namespace AoC.Year2021.Day05
 {
@@ -30,7 +30,7 @@ namespace AoC.Year2021.Day05
             public int ToX { get; set; }
             public int ToY { get; set; }
             public Order Order { get; set; }
-            
+
             public static Line Parse(string input)
             {
                 var split = input.Split(" -> ");
@@ -51,8 +51,8 @@ namespace AoC.Year2021.Day05
                     Order = from[0] == to[0]
                         ? Order.Vertical
                         : from[1] == to[1]
-                          ? Order.Horizontal
-                          : Order.Diagonal
+                            ? Order.Horizontal
+                            : Order.Diagonal
                 };
             }
 
@@ -79,6 +79,7 @@ namespace AoC.Year2021.Day05
                     for (var x = Math.Min(line.FromX, line.ToX); x <= Math.Max(line.FromX, line.ToX); x++)
                         grid[x, y]++;
                 }
+
                 if (line.Order == Order.Vertical)
                 {
                     var x = line.FromX;
@@ -89,9 +90,14 @@ namespace AoC.Year2021.Day05
 
             var count = 0;
             for (var i = 0; i < size; i++)
-                for(var j = 0; j < size; j++)
+            {
+                for (var j = 0; j < size; j++)
+                {
                     if (grid[i, j] > 1)
                         count++;
+                }
+            }
+
             return count;
         }
 
@@ -116,7 +122,7 @@ namespace AoC.Year2021.Day05
         #region Puzzle 2
 
         private object SolvePuzzle2(string[] input)
-        { 
+        {
             var lines = input.Select(Line.Parse).ToArray();
             var size = lines.Max(x => Math.Max(Math.Max(x.FromX, x.FromY), Math.Max(x.ToX, x.ToY))) + 1;
 
@@ -154,9 +160,14 @@ namespace AoC.Year2021.Day05
 
             var count = 0;
             for (var i = 0; i < size; i++)
-                for(var j = 0; j < size; j++)
+            {
+                for (var j = 0; j < size; j++)
+                {
                     if (grid[i, j] > 1)
                         count++;
+                }
+            }
+
             return count;
         }
 

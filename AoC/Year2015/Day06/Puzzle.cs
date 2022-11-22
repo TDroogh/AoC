@@ -1,7 +1,7 @@
-using System;
-using System.Linq;
 using AoC.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 
 namespace AoC.Year2015.Day06
 {
@@ -27,9 +27,9 @@ namespace AoC.Year2015.Day06
 
             public static InstructionType GetType(string input)
             {
-                if (input.StartsWith("toggle"))
+                if (input.StartsWith("toggle", StringComparison.Ordinal))
                     return InstructionType.Toggle;
-                if (input.StartsWith("turn on"))
+                if (input.StartsWith("turn on", StringComparison.Ordinal))
                     return InstructionType.On;
                 return InstructionType.Off;
             }
@@ -80,11 +80,13 @@ namespace AoC.Year2015.Day06
 
             var sum = 0;
             for (var x = 0; x < 1000; x++)
+            {
                 for (var y = 0; y < 1000; y++)
                 {
                     if (grid[x, y])
                         sum++;
                 }
+            }
 
             return sum;
         }
@@ -140,10 +142,12 @@ namespace AoC.Year2015.Day06
 
             var sum = 0;
             for (var x = 0; x < 1000; x++)
+            {
                 for (var y = 0; y < 1000; y++)
                 {
                     sum += grid[x, y];
                 }
+            }
 
             return sum;
         }

@@ -1,8 +1,8 @@
+using AoC.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2021.Day13
 {
@@ -12,9 +12,9 @@ namespace AoC.Year2021.Day13
         private static class Results
         {
             public const int Setup1 = 17;
-            public const int Puzzle1 = 1;
+            public const int Puzzle1 = 837;
             public const int Setup2 = 16;
-            public const int Puzzle2 = 2;
+            public const int Puzzle2 = 99;
         }
 
         public class Instructions
@@ -32,7 +32,7 @@ namespace AoC.Year2021.Day13
 
                 foreach (var line in input)
                 {
-                    if (line.StartsWith("fold along "))
+                    if (line.StartsWith("fold along ", StringComparison.OrdinalIgnoreCase))
                     {
                         instructions.FoldingInstructions.Add(FoldingInstruction.Parse(line));
                         continue;
@@ -40,8 +40,8 @@ namespace AoC.Year2021.Day13
                     if (string.IsNullOrEmpty(line))
                         continue;
 
-                    var coord = line.Split(",");
-                    instructions.Points.Add((int.Parse(coord[0]), int.Parse(coord[1])));
+                    var coordinates = line.Split(",");
+                    instructions.Points.Add((int.Parse(coordinates[0]), int.Parse(coordinates[1])));
                 }
 
                 return instructions;

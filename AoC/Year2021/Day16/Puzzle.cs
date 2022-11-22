@@ -1,9 +1,9 @@
+using AoC.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2021.Day16
 {
@@ -30,7 +30,6 @@ namespace AoC.Year2021.Day16
             public const long Setup213 = 1;
             public const long Puzzle2 = 1264857437203;
         }
-
 
         public abstract class Packet
         {
@@ -75,7 +74,7 @@ namespace AoC.Year2021.Day16
             {
                 SubPackets = new List<Packet>();
             }
-            
+
             public List<Packet> SubPackets { get; }
 
             public override IEnumerable<Packet> GetAllPackets()
@@ -127,7 +126,6 @@ namespace AoC.Year2021.Day16
                 return $"({expression})";
             }
         }
-
 
         #region Puzzle 1
 
