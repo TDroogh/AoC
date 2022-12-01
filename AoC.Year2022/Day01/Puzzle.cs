@@ -1,20 +1,39 @@
-namespace AoC.Year2022.Day0
+namespace AoC.Year2022.Day01
 {
     public class Puzzle
     {
         private static class Results
         {
-            public const int Setup1 = 1;
-            public const int Puzzle1 = 1;
-            public const int Setup2 = 2;
-            public const int Puzzle2 = 2;
+            public const int Setup1 = 24000;
+            public const int Puzzle1 = 70369;
+            public const int Setup2 = 45000;
+            public const int Puzzle2 = 203002;
+        }
+
+        private static IEnumerable<int> CalculateCalories(string[] input)
+        {
+            var currentElf = 0;
+            foreach (var cal in input)
+            {
+                if (string.IsNullOrWhiteSpace(cal))
+                {
+                    yield return currentElf;
+                    currentElf = 0;
+                }
+                else
+                {
+                    currentElf += int.Parse(cal);
+                }
+            }
+
+            yield return currentElf;
         }
 
         #region Puzzle 1
 
-        private object SolvePuzzle1(string[] input)
+        private int SolvePuzzle1(string[] input)
         {
-            return 1;
+            return CalculateCalories(input).Max();
         }
 
         [Fact]
@@ -37,9 +56,9 @@ namespace AoC.Year2022.Day0
 
         #region Puzzle 2
 
-        private object SolvePuzzle2(string[] input)
+        private int SolvePuzzle2(string[] input)
         {
-            return 2;
+            return CalculateCalories(input).OrderDescending().Take(3).Sum();
         }
 
         [Fact]
