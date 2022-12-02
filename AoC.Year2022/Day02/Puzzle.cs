@@ -86,7 +86,6 @@ namespace AoC.Year2022.Day02
 
         private object SolvePuzzle1(string[] input)
         {
-            var i = 0;
             return input.Sum(x =>
             {
                 var round = Round.Parse1(x);
@@ -118,7 +117,6 @@ namespace AoC.Year2022.Day02
 
         private object SolvePuzzle2(string[] input)
         {
-            var i = 0;
             return input.Sum(x =>
             {
                 var round = Round.Parse2(x);
