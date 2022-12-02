@@ -22,20 +22,41 @@ namespace AoC.Year2022.Day02
             public Shape Opponent { get; set; }
             public Shape You { get; set; }
 
+            private static Shape GetShapeWinningFrom(Shape input)
+            {
+                return input switch
+                {
+                    Shape.Rock => Shape.Paper,
+                    Shape.Paper => Shape.Scissors,
+                    Shape.Scissors => Shape.Rock,
+                    _ => throw new ArgumentOutOfRangeException(nameof(input))
+                };
+            }
+
+            private static Shape GetShapeLosingTo(Shape input)
+            {
+                return input switch
+                {
+                    Shape.Rock => Shape.Scissors,
+                    Shape.Paper => Shape.Rock,
+                    Shape.Scissors => Shape.Paper,
+                    _ => throw new ArgumentOutOfRangeException(nameof(input))
+                };
+            }
+
             public int GetScore()
             {
-                if (Opponent == You)
+                if (You == Opponent)
                 {
                     return 3 + (int)You;
                 }
 
-                return (int)You + You switch
+                if (You == GetShapeWinningFrom(Opponent))
                 {
-                    Shape.Rock when Opponent == Shape.Paper => 0,
-                    Shape.Paper when Opponent == Shape.Scissors => 0,
-                    Shape.Scissors when Opponent == Shape.Rock => 0,
-                    _ => 6
-                };
+                    return 6 + (int)You;
+                }
+
+                return 0 + (int)You;
             }
 
             public static Round Parse1(string input)
@@ -44,7 +65,7 @@ namespace AoC.Year2022.Day02
 
                 return new Round
                 {
-                    Opponent = GetOpponentShape(split[0]),
+                    Opponent = ParseOpponentShape(split[0]),
                     You = split[1] switch
                     {
                         "X" => Shape.Rock,
@@ -57,21 +78,21 @@ namespace AoC.Year2022.Day02
             public static Round Parse2(string input)
             {
                 var split = input.Split(" ");
-                var opponent = GetOpponentShape(split[0]);
+                var opponent = ParseOpponentShape(split[0]);
 
                 return new Round
                 {
                     Opponent = opponent,
                     You = split[1] switch
                     {
-                        "X" => opponent == Shape.Rock ? Shape.Scissors : opponent - 1,
+                        "X" => GetShapeLosingTo(opponent),
                         "Y" => opponent,
-                        _ => opponent == Shape.Scissors ? Shape.Rock : opponent + 1,
+                        _ => GetShapeWinningFrom(opponent),
                     }
                 };
             }
 
-            private static Shape GetOpponentShape(string value)
+            private static Shape ParseOpponentShape(string value)
             {
                 return value switch
                 {
