@@ -1,16 +1,7 @@
-using Xunit.Abstractions;
-
 namespace AoC.Year2022.Day02
 {
     public class Puzzle
     {
-        private readonly ITestOutputHelper _testHelper;
-
-        public Puzzle(ITestOutputHelper testHelper)
-        {
-            _testHelper = testHelper;
-        }
-
         private static class Results
         {
             public const int Setup1 = 15;
@@ -100,7 +91,6 @@ namespace AoC.Year2022.Day02
             {
                 var round = Round.Parse1(x);
                 var score = round.GetScore();
-                _testHelper.WriteLine($"Round {++i}: {score} ({round.You} vs {round.Opponent})");
 
                 return score;
             });
@@ -133,7 +123,6 @@ namespace AoC.Year2022.Day02
             {
                 var round = Round.Parse2(x);
                 var score = round.GetScore();
-                _testHelper.WriteLine($"Round {++i}: {score} ({round.You} vs {round.Opponent})");
 
                 return score;
             });
