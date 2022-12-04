@@ -47,8 +47,8 @@ namespace AoC.Year2022.Day04
 
         public class Pair
         {
-            private Elf First { get; init; }
-            private Elf Last { get; init; }
+            private Elf First { get; }
+            private Elf Last { get; }
 
             private Pair(Elf first, Elf last)
             {
