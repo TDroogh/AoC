@@ -22,9 +22,16 @@ namespace AoC.Year2022.Day05
 
         public class Rearrangement
         {
-            public string From { get; set; }
-            public string To { get; set; }
-            public int Amount { get; set; }
+            public string From { get; }
+            public string To { get; }
+            public int Amount { get; }
+
+            public Rearrangement(int amount, string from, string to)
+            {
+                Amount = amount;
+                From = from;
+                To = to;
+            }
         }
 
         private class Problem
@@ -102,12 +109,7 @@ namespace AoC.Year2022.Day05
                 for (var i = emptyIndex + 1; i < lines.Length; i++)
                 {
                     var split = lines[i].Split(' ');
-                    var rearrangement = new Rearrangement
-                    {
-                        Amount = int.Parse(split[1]),
-                        From = split[3],
-                        To = split[5]
-                    };
+                    var rearrangement = new Rearrangement(int.Parse(split[1]), split[3], split[5]);
 
                     problem.Rearrangements.Add(rearrangement);
                 }
