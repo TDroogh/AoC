@@ -95,7 +95,7 @@ namespace AoC.Year2022.Day09
 
         private object SolvePuzzle1(string[] input)
         {
-            var locations = new List<(int x, int y)> { (0, 0) };
+            var locations = new HashSet<(int x, int y)> { (0, 0) };
             var head = new Knot();
             var tail = new Knot();
 
@@ -112,9 +112,9 @@ namespace AoC.Year2022.Day09
                     {
                         locations.Add((tail.XPos, tail.YPos));
                     }
-
-                    _helper.WriteLine($"Head: {head}, Tail: {tail} ({locations.Count}");
                 }
+
+                _helper.WriteLine($"Head: {head}, Tail: {tail} ({locations.Distinct().Count()} distinct locations)");
             }
 
             return locations.Distinct().Count();
@@ -142,7 +142,7 @@ namespace AoC.Year2022.Day09
 
         private object SolvePuzzle2(string[] input)
         {
-            var locations = new List<(int x, int y)> { (0, 0) };
+            var locations = new HashSet<(int x, int y)> { (0, 0) };
             var knots = Enumerable.Range(0, 10).Select(_ => new Knot()).ToList();
             var head = knots[0];
             var tail = knots[9];
@@ -166,7 +166,7 @@ namespace AoC.Year2022.Day09
                     locations.Add((tail.XPos, tail.YPos));
                 }
 
-                _helper.WriteLine($"Head: {head}, Tail: {tail} ({locations.Distinct().Count()}");
+                _helper.WriteLine($"Head: {head}, Tail: {tail} ({locations.Distinct().Count()} distinct locations)");
             }
 
             return locations.Distinct().Count();
