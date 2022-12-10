@@ -69,20 +69,15 @@ namespace AoC.Year2022.Day09
 
             private static int GetMovement(int diff)
             {
-                switch (diff)
+                return diff switch
                 {
-                    case 0:
-                        return 0;
-                    case 1:
-                    case -1:
-                        return diff;
-                    case 2:
-                        return 1;
-                    case -2:
-                        return -1;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(diff), diff, "Diff is larger than 2");
-                }
+                    0 => 0,
+                    1 => diff,
+                    -1 => diff,
+                    2 => 1,
+                    -2 => -1,
+                    _ => throw new ArgumentOutOfRangeException(nameof(diff), diff, "Diff is larger than 2")
+                };
             }
 
             public override string ToString()
