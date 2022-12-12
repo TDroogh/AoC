@@ -16,10 +16,21 @@ namespace AoC.Util
                 }
             }
         }
+
         public static IEnumerable<T> GetAllValues<T>(this T[,] array)
         {
             foreach (var (x, y) in array.GetAllPoints())
                 yield return array[x, y];
+        }
+
+        public static (int x, int y) GetIndex<T>(this T[,] array, T valueToFind) where T : IEquatable<T>
+        {
+            return array.GetAllPoints().First(c => array[c.Item1, c.Item2].Equals(valueToFind));
+        }
+
+        public static IEnumerable<(int x, int y)> FindIndices<T>(this T[,] array, T valueToFind) where T : IEquatable<T>
+        {
+            return array.GetAllPoints().Where(c => array[c.Item1, c.Item2].Equals(valueToFind));
         }
 
         public static IEnumerable<(int, int)> GetAdjacentPoints<T>(this T[,] input, int x, int y, bool includeDiagonal)
