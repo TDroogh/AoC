@@ -33,6 +33,31 @@ namespace AoC.Util
             return array.GetAllPoints().Where(c => array[c.Item1, c.Item2].Equals(valueToFind));
         }
 
+        public static IEnumerable<(int x, int y)> GetPointsBetween((int x, int y) from, (int x, int y) to)
+        {
+            if (from.x == to.x)
+            {
+                var minY = Math.Min(from.y, to.y);
+                var maxY = Math.Max(from.y, to.y);
+
+                for (var y = minY; y <= maxY; y++)
+                {
+                    yield return (from.x, y);
+                }
+            }
+
+            if (from.y == to.y)
+            {
+                var minY = Math.Min(from.x, to.x);
+                var maxY = Math.Max(from.x, to.x);
+
+                for (var x = minY; x <= maxY; x++)
+                {
+                    yield return (x, from.y);
+                }
+            }
+        }
+
         public static IEnumerable<(int, int)> GetAdjacentPoints<T>(this T[,] input, int x, int y, bool includeDiagonal)
         {
             foreach (var (dx, dy) in new[] { (0, -1), (-1, 0), (0, 1), (1, 0) })
@@ -61,18 +86,21 @@ namespace AoC.Util
             }
         }
 
-        public static void Print(this int[,] array)
+        public static void Print<T>(this T[,] array, bool withBraces = true, Action<string>? printAction = null)
         {
-            Console.WriteLine("".PadLeft(array.GetLength(0) * 4, '='));
+            printAction ??= Console.WriteLine;
+
+            printAction("".PadLeft(array.GetLength(1), '='));
             for (var x = 0; x < array.GetLength(0); x++)
             {
                 var line = new StringBuilder();
                 for (var y = 0; y < array.GetLength(1); y++)
                 {
-                    line.Append($"[{array[y, x],2}]");
+                    var toPrint = withBraces ? $"[{array[x, y],2}]" : array[x, y]!.ToString();
+                    line.Append(toPrint);
                 }
 
-                Console.WriteLine(line);
+                printAction(line.ToString());
             }
         }
     }
