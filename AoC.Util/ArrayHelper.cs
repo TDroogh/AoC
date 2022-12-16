@@ -6,7 +6,7 @@ namespace AoC.Util
 {
     public static class ArrayHelper
     {
-        public static IEnumerable<(int, int)> GetAllPoints<T>(this T[,] array)
+        public static IEnumerable<(int x, int y)> GetAllPoints<T>(this T[,] array)
         {
             for (var x = 0; x < array.GetLength(0); x++)
             {
@@ -40,22 +40,49 @@ namespace AoC.Util
                 var minY = Math.Min(from.y, to.y);
                 var maxY = Math.Max(from.y, to.y);
 
-                for (var y = minY; y <= maxY; y++)
+                for (var dy = 0; dy <= maxY - minY; dy++)
                 {
-                    yield return (from.x, y);
+                    yield return (from.x, minY + dy);
                 }
             }
 
             if (from.y == to.y)
             {
-                var minY = Math.Min(from.x, to.x);
-                var maxY = Math.Max(from.x, to.x);
+                var minX = Math.Min(from.x, to.x);
+                var maxX = Math.Max(from.x, to.x);
 
-                for (var x = minY; x <= maxY; x++)
+                for (var dx = 0; dx <= maxX - minX; dx++)
                 {
-                    yield return (x, from.y);
+                    yield return (minX + dx, from.y);
                 }
             }
+
+            if (Math.Abs(from.y - to.y) == Math.Abs(from.x - to.x))
+            {
+                var diff = Math.Abs(from.y - to.y);
+                var posX = from.x < to.x;
+                var posY = from.y < to.y;
+
+                for (var d = 0; d <= diff; d++)
+                {
+                    var x = posX ? from.x + d : from.x - d;
+                    var y = posY ? from.y + d : from.y - d;
+                    yield return (x, y);
+                }
+            }
+        }
+
+        public static IEnumerable<(int x, int y)> GetPointsAtDistance((int x, int y) from, int distance)
+        {
+            var left = (from.x - distance, from.y);
+            var right = (from.x + distance, from.y);
+            var bottom = (from.x, from.y - distance);
+            var top = (from.x, from.y + distance);
+
+            return GetPointsBetween(left, bottom)
+                .Union(GetPointsBetween(bottom, right))
+                .Union(GetPointsBetween(right, top))
+                .Union(GetPointsBetween(top, left));
         }
 
         public static IEnumerable<(int, int)> GetAdjacentPoints<T>(this T[,] input, int x, int y, bool includeDiagonal)
