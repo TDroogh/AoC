@@ -130,29 +130,24 @@ namespace AoC.Year2020.Day20
                 switch (orientation)
                 {
                     case TileOrientation.Top:
-                    {
                         for (var i = 0; i < edge.Length; i++)
                             edge[i] = values[0, i];
                         break;
-                    }
+
                     case TileOrientation.Bottom:
-                    {
                         for (var i = 0; i < edge.Length; i++)
                             edge[i] = values[length - 1, i];
                         break;
-                    }
+
                     case TileOrientation.Left:
-                    {
                         for (var i = 0; i < edge.Length; i++)
                             edge[i] = values[i, 0];
                         break;
-                    }
+
                     case TileOrientation.Right:
-                    {
                         for (var i = 0; i < edge.Length; i++)
                             edge[i] = values[i, length - 1];
                         break;
-                    }
                 }
 
                 return edge;
@@ -251,6 +246,7 @@ namespace AoC.Year2020.Day20
         }
 
         private readonly Random _rng = new Random();
+
         private Tile[,] DoRandomChange(Tile[,] oldGrid)
         {
             var length = oldGrid.GetLength(0);

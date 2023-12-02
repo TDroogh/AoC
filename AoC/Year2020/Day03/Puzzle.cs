@@ -12,6 +12,7 @@ namespace AoC.Year2020.Day03
             var input = InputReader.ReadArrayInput();
             Assert.AreEqual(7, CountTrees(input, '#', 3, 1));
         }
+
         [TestMethod]
         public void Setup2()
         {

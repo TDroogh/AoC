@@ -1,8 +1,8 @@
+using AoC.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AoC.Year2020.Day24
 {
@@ -104,21 +104,17 @@ namespace AoC.Year2020.Day24
                         yield return Orientation.West;
                         break;
                     case 'n':
-                    {
                         if (line[++i] == 'e')
                             yield return Orientation.NorthEast;
                         if (line[i] == 'w')
                             yield return Orientation.NorthWest;
                         break;
-                    }
                     case 's':
-                    {
                         if (line[++i] == 'e')
                             yield return Orientation.SouthEast;
                         if (line[i] == 'w')
                             yield return Orientation.SouthWest;
                         break;
-                    }
                 }
             }
         }
@@ -192,8 +188,7 @@ namespace AoC.Year2020.Day24
                 newFloor[tile.Key] = tile.Value;
                 foreach (var adjTile in GetAdjacentTiles(tile.Key))
                 {
-                    if (newFloor.ContainsKey(adjTile) == false)
-                        newFloor.Add(adjTile, false);
+                    newFloor.TryAdd(adjTile, false);
                 }
             }
 
