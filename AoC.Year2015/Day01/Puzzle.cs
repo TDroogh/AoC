@@ -1,7 +1,4 @@
-﻿using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace AoC.Year2015.Day01
+﻿namespace AoC.Year2015.Day01
 {
     [TestClass]
     public class Puzzle

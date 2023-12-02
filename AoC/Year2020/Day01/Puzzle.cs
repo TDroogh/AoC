@@ -6,10 +6,6 @@ namespace AoC.Year2020.Day01
     [TestClass]
     public class Puzzle
     {
-        #region input
-
-        #endregion
-
         [TestMethod]
         public void Puzzle1()
         {
