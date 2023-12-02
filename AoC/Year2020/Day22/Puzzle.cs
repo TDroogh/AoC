@@ -1,9 +1,3 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AoC.Year2020.Day22
 {
     [TestClass]
@@ -13,13 +7,13 @@ namespace AoC.Year2020.Day22
 
         private class Player
         {
-            public int Id { get; set; }
-            public Queue<int> Cards { get; set; }
+            public required int Id { get; set; }
+            public required Queue<int> Cards { get; set; }
         }
 
         private List<Player> ParsePlayers(string[] input)
         {
-            Player current = null;
+            Player? current = null;
             var players = new List<Player>();
             foreach (var line in input)
             {

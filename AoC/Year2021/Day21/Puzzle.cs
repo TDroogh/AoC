@@ -1,9 +1,3 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AoC.Year2021.Day21
 {
     [TestClass]
@@ -108,10 +102,9 @@ namespace AoC.Year2021.Day21
 
         public class Universe
         {
-            public long Count { get; set; }
-
-            public Player Player1 { get; set; }
-            public Player Player2 { get; set; }
+            public required long Count { get; set; }
+            public required Player Player1 { get; init; }
+            public required Player Player2 { get; init; }
 
             public Universe Copy(int count)
             {

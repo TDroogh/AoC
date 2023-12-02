@@ -22,12 +22,12 @@ namespace AoC.Year2022.Day11
 
         public class Monkey
         {
-            public List<BigInteger> StartingItems { get; set; }
-            public string Operation { get; set; }
-            public int TestDivisibleBy { get; set; }
-            public int IfTrueThrowTo { get; set; }
-            public int IfFalseThrowTo { get; set; }
-            public long TotalCount { get; set; }
+            public required List<BigInteger> StartingItems { get; init; }
+            public required string Operation { get; init; }
+            public required int TestDivisibleBy { get; init; }
+            public required int IfTrueThrowTo { get; init; }
+            public required int IfFalseThrowTo { get; init; }
+            public required long TotalCount { get; set; }
 
             public BigInteger ExecuteOperation(BigInteger old)
             {
@@ -38,6 +38,7 @@ namespace AoC.Year2022.Day11
                     ? Operation.Split('+').Select(val => GetBigInt(val, old)).Sum()
                     : Operation.Split('*').Select(val => GetBigInt(val, old)).Product();
             }
+
             public bool TestDivisible(BigInteger value)
             {
                 if (TestDivisibleBy == 2)

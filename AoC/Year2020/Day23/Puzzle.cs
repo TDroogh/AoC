@@ -1,8 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace AoC.Year2020.Day23
 {
@@ -16,14 +12,14 @@ namespace AoC.Year2020.Day23
                 Cups = new Dictionary<int, Cup>();
             }
 
-            public Cup Start { get; set; }
+            public Cup? Start { get; set; }
             public Dictionary<int, Cup> Cups { get; }
 
             public static CupGame Parse(string input, int fill = 9)
             {
                 var game = new CupGame();
 
-                var previous = (Cup)null;
+                Cup? previous = null;
                 for (var i = 1; i <= fill; i++)
                 {
                     var value = i - 1 < input.Length ? int.Parse(input[i - 1].ToString()) : i;
@@ -41,7 +37,7 @@ namespace AoC.Year2020.Day23
                 }
 
                 if (previous != null)
-                    previous.Next = game.Start;
+                    previous.Next = game.Start!;
 
                 return game;
             }
@@ -63,7 +59,7 @@ namespace AoC.Year2020.Day23
                 var previous = after;
                 for (var i = 0; i < count; i++)
                 {
-                    result[i] = previous.Next;
+                    result[i] = previous!.Next!;
                     previous = previous.Next;
                 }
 
@@ -102,14 +98,14 @@ namespace AoC.Year2020.Day23
 
                 //var afterCup = Cups[after];
 
-                return after.Next;
+                return after.Next!;
             }
         }
 
         public class Cup
         {
             public int Value { get; set; }
-            public Cup Next { get; set; }
+            public Cup? Next { get; set; }
 
             /// <inheritdoc />
             public override string ToString()
@@ -161,7 +157,7 @@ namespace AoC.Year2020.Day23
             Console.WriteLine($"Input: {input}. Iterations: {iterations}");
 
             var cups = CupGame.Parse(input);
-            var selected = cups.Start;
+            var selected = cups.Start!;
 
             for (var i = 1; i <= iterations; i++)
             {
@@ -206,7 +202,7 @@ namespace AoC.Year2020.Day23
             Console.WriteLine($"Input: {input}. Iterations: {iterations}");
 
             var cups = CupGame.Parse(input, numbers);
-            var selected = cups.Start;
+            var selected = cups.Start!;
 
             for (var i = 1; i <= iterations; i++)
             {

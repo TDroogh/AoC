@@ -96,15 +96,11 @@ namespace AoC.Year2022.Day17
                     switch (movement)
                     {
                         case '<' when IsValid(shape, field, x, y - 1):
-                        {
                             y--;
                             break;
-                        }
                         case '>' when IsValid(shape, field, x, y + 1):
-                        {
                             y++;
                             break;
-                        }
                     }
 
                     //Move down
@@ -178,14 +174,14 @@ namespace AoC.Year2022.Day17
             }
         }
 
-        private void PrintWithShape(char[,] shape, char[,] field, int x, int y)
-        {
-            var copy = (char[,])field.Clone();
+        //private void PrintWithShape(char[,] shape, char[,] field, int x, int y)
+        //{
+        //    var copy = (char[,])field.Clone();
 
-            PlaceShapeInField(shape, copy, x, y, true);
+        //    PlaceShapeInField(shape, copy, x, y, true);
 
-            copy.Print(false, _helper.WriteLine);
-        }
+        //    copy.Print(false, _helper.WriteLine);
+        //}
 
         [Fact]
         public void Setup1()
@@ -207,7 +203,7 @@ namespace AoC.Year2022.Day17
 
         #region Puzzle 2
 
-        private object SolvePuzzle2(string[] input, int iterations = 2022)
+        public object SolvePuzzle2(string[] input, int iterations = 2022)
         {
             var defaultOffset = 5000;
             var defaultHeight = defaultOffset * 2 + 10;
@@ -231,15 +227,11 @@ namespace AoC.Year2022.Day17
                     switch (movement)
                     {
                         case '<' when IsValid(shape, field, x, y - 1):
-                        {
                             y--;
                             break;
-                        }
                         case '>' when IsValid(shape, field, x, y + 1):
-                        {
                             y++;
                             break;
-                        }
                     }
 
                     //Move down
@@ -402,7 +394,7 @@ namespace AoC.Year2022.Day17
                 _helper.WriteLine($"{i * 2}: {(result - 7) * i * 2 + 7}, {SolvePuzzle1(input, cycleSize * i * 2)}");
             }
 
-            Assert.Equal(Results.Setup2, total);
+            Assert.Equal(Results.Puzzle2, total);
         }
 
         #endregion

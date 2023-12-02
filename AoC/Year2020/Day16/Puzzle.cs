@@ -1,9 +1,3 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AoC.Year2020.Day16
 {
     [TestClass]
@@ -11,11 +5,11 @@ namespace AoC.Year2020.Day16
     {
         #region Puzzle 1
 
-        private class RuleSet
+        private record RuleSet
         {
-            public string Name { get; set; }
-            public List<int> Values { get; set; }
-            public int Index { get; set; }
+            public required string Name { get; init; }
+            public required List<int> Values { get; init; }
+            public required int Index { get; set; }
 
             public static RuleSet Parse(string line)
             {

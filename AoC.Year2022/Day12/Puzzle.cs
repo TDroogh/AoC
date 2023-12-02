@@ -2,15 +2,8 @@ using Xunit.Abstractions;
 
 namespace AoC.Year2022.Day12
 {
-    public class Puzzle
+    public class Puzzle(ITestOutputHelper helper)
     {
-        private readonly ITestOutputHelper _helper;
-
-        public Puzzle(ITestOutputHelper helper)
-        {
-            _helper = helper;
-        }
-
         private static class Results
         {
             public const int Setup1 = 31;
@@ -18,6 +11,7 @@ namespace AoC.Year2022.Day12
             public const int Setup2 = 30;
             public const int Puzzle2 = 454;
         }
+
         private static void InitMaps(char[,] input, out int xe, out int ye, out int[,] heightMap, out int[,] distMap)
         {
             xe = 0;
@@ -52,7 +46,7 @@ namespace AoC.Year2022.Day12
         private int FindShortestPath(char[,] input, int[,] distMap, int[,] heightMap, int xe, int ye)
         {
             var i = 1;
-            var prevCount = -1;
+            int prevCount;
             var count = -1;
             do
             {
@@ -104,11 +98,11 @@ namespace AoC.Year2022.Day12
                 count = distMap.GetAllValues().Count(x => x > -1);
                 if (i++ % 100 == 0)
                 {
-                    _helper.WriteLine($"Iteration {i - 1}: {distMap.GetAllValues().Count(x => x > -1)}");
+                    helper.WriteLine($"Iteration {i - 1}: {distMap.GetAllValues().Count(x => x > -1)}");
                 }
             } while (distMap.GetAllValues().Any(x => x == -1) && i < 250 && prevCount != count);
 
-            _helper.WriteLine($"Iteration {i}: {distMap.GetAllValues().Count(x => x > -1)}");
+            helper.WriteLine($"Iteration {i}: {distMap.GetAllValues().Count(x => x > -1)}");
             return distMap[xe, ye];
         }
 

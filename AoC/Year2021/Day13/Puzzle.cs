@@ -1,9 +1,3 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AoC.Year2021.Day13
 {
     [TestClass]
@@ -19,8 +13,8 @@ namespace AoC.Year2021.Day13
 
         public class Instructions
         {
-            public List<(int, int)> Points { get; set; }
-            public List<FoldingInstruction> FoldingInstructions { get; set; }
+            public required List<(int, int)> Points { get; init; }
+            public required List<FoldingInstruction> FoldingInstructions { get; init; }
 
             public static Instructions Parse(string[] input)
             {
@@ -50,8 +44,8 @@ namespace AoC.Year2021.Day13
 
         public class FoldingInstruction
         {
-            public bool Horizontal { get; set; }
-            public int Number { get; set; }
+            public required bool Horizontal { get; init; }
+            public required int Number { get; init; }
 
             public static FoldingInstruction Parse(string input)
             {

@@ -1,7 +1,3 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-
 namespace AoC.Year2021.Day17
 {
     [TestClass]

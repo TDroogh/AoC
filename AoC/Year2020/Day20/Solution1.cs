@@ -1,9 +1,4 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace AoC.Year2020.Day20
 {
@@ -18,11 +13,11 @@ namespace AoC.Year2020.Day20
             Left
         }
 
-        public class Tile
+        public record Tile
         {
-            public long Id { get; set; }
-            public int RibSize { get; set; }
-            public bool[,] Values { get; set; }
+            public required long Id { get; init; }
+            public required int RibSize { get; init; }
+            public required bool[,] Values { get; init; }
 
             public static Tile Parse(List<string> tileLines)
             {

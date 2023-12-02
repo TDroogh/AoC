@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace AoC.Year2020.Day21
 {
     [TestClass]
@@ -13,8 +7,8 @@ namespace AoC.Year2020.Day21
 
         public class Recipe
         {
-            public string[] Ingredients { get; set; }
-            public string[] Allergens { get; set; }
+            public required string[] Ingredients { get; init; }
+            public required string[] Allergens { get; init; }
 
             public static Recipe Parse(string input)
             {
@@ -85,7 +79,7 @@ namespace AoC.Year2020.Day21
             var allIngredients = recipes.SelectMany(x => x.Ingredients).Distinct().ToList();
             var allAllergens = recipes.SelectMany(x => x.Allergens).Distinct().ToList();
 
-            var map = new Dictionary<string, string>();
+            var map = new Dictionary<string, string?>();
 
             var i = 0;
             while (map.Count != allIngredients.Count)

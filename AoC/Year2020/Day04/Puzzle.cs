@@ -1,22 +1,17 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
-
 namespace AoC.Year2020.Day04
 {
     [TestClass]
     public class Puzzle
     {
-        private class Passport
+        private record Passport
         {
-            public string YearOfBirth { get; set; }
-            public string YearOfIssuing { get; set; }
-            public string YearOfExpiration { get; set; }
-            public string Height { get; set; }
-            public string HairColor { get; set; }
-            public string EyeColor { get; set; }
-            public string PassportId { get; set; }
+            public string YearOfBirth { get; set; } = default!;
+            public string YearOfIssuing { get; set; } = default!;
+            public string YearOfExpiration { get; set; } = default!;
+            public string Height { get; set; } = default!;
+            public string HairColor { get; set; } = default!;
+            public string EyeColor { get; set; } = default!;
+            public string PassportId { get; set; } = default!;
 
             public void SetProperty(string prop, string value)
             {

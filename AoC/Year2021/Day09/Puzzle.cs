@@ -1,8 +1,3 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AoC.Year2021.Day09
 {
     [TestClass]
@@ -69,19 +64,19 @@ namespace AoC.Year2021.Day09
 
                     if (isLowest)
                     {
-                        System.Console.WriteLine($"Lowest point: {x}, {y}");
+                        Console.WriteLine($"Lowest point: {x}, {y}");
                         var points = new List<(int, int)>();
                         FindBasin(input, x, y, points);
 
                         foreach (var point in points)
-                            System.Console.WriteLine($"{point.Item1}, {point.Item2}");
+                            Console.WriteLine($"{point.Item1}, {point.Item2}");
                         basinSizes.Add(points.Distinct().Count());
                     }
                 }
             }
 
             basinSizes = basinSizes.OrderByDescending(i => i).Take(3).ToList();
-            System.Console.WriteLine($"{basinSizes[0]}-{basinSizes[1]}-{basinSizes[2]}");
+            Console.WriteLine($"{basinSizes[0]}-{basinSizes[1]}-{basinSizes[2]}");
             return basinSizes.Aggregate(1, (x, y) => x * y);
         }
 

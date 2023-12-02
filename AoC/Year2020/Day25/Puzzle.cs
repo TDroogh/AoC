@@ -1,6 +1,3 @@
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace AoC.Year2020.Day25
 {
     [TestClass]

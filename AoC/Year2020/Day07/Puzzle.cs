@@ -1,28 +1,24 @@
-﻿using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace AoC.Year2020.Day07
+﻿namespace AoC.Year2020.Day07
 {
     [TestClass]
     public class Puzzle
     {
-        private class Bag
+        private record Bag
         {
-            public string Name { get; set; }
-            public Dictionary<string, int> Carries { get; set; }
+            public required string Name { get; init; }
+            public required Dictionary<string, int> Carries { get; init; }
 
             public static Bag Parse(string line)
             {
-                var bag = new Bag { Name = line.Split("bags")[0].Trim() };
                 var contains = line.Split("contain")[1].Trim().TrimEnd('.');
-
-                bag.Carries = contains.Split(',')
-                    .Select(ParseContains)
-                    .Where(x => x.Value > 0)
-                    .ToDictionary(x => x.Key, y => y.Value);
+                var bag = new Bag
+                {
+                    Name = line.Split("bags")[0].Trim(),
+                    Carries = contains.Split(',')
+                        .Select(ParseContains)
+                        .Where(x => x.Value > 0)
+                        .ToDictionary(x => x.Key, y => y.Value)
+                };
 
                 return bag;
             }

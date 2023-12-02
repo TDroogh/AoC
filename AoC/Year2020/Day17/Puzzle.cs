@@ -1,5 +1,3 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 
 namespace AoC.Year2020.Day17

@@ -1,9 +1,3 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AoC.Year2021.Day12
 {
     [TestClass]
@@ -23,9 +17,9 @@ namespace AoC.Year2021.Day12
 
         private class CaveSystem
         {
-            public bool AllowDoubleSmallCaveVisit { get; set; }
-            public List<Cave> Caves { get; set; }
-            public List<Connection> Connections { get; set; }
+            public required bool AllowDoubleSmallCaveVisit { get; set; }
+            public required List<Cave> Caves { get; set; }
+            public required List<Connection> Connections { get; set; }
 
             public Cave GetOrAdd(string name)
             {
@@ -136,14 +130,14 @@ namespace AoC.Year2021.Day12
 
         private class Cave
         {
-            public string Name { get; set; }
-            public CaveType Type { get; set; }
+            public required string Name { get; init; }
+            public required CaveType Type { get; init; }
         }
 
         private class Connection
         {
-            public Cave From { get; set; }
-            public Cave To { get; set; }
+            public required Cave From { get; init; }
+            public required Cave To { get; init; }
         }
 
         private enum CaveType

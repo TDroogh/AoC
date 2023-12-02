@@ -1,9 +1,4 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace AoC.Year2020.Day20
 {
@@ -26,18 +21,18 @@ namespace AoC.Year2020.Day20
             Center
         }
 
-        public class TileMatch
+        public record TileMatch
         {
-            public TileOrientation Orientation { get; set; }
-            public TileVariant Other { get; set; }
+            public required TileOrientation Orientation { get; init; }
+            public required TileVariant Other { get; init; }
         }
 
-        public class TileVariant
+        public record TileVariant
         {
-            public Tile Tile { get; set; }
-            public Tile Original { get; set; }
-            public int Rotation { get; set; }
-            public bool Flipped { get; set; }
+            public required Tile Tile { get; init; }
+            public required Tile Original { get; init; }
+            public required int Rotation { get; init; }
+            public required bool Flipped { get; init; }
         }
 
         public class Tile
@@ -431,14 +426,14 @@ namespace AoC.Year2020.Day20
 
         #region Puzzle 2
 
-        private static IEnumerable<Tile> GetTilesInGrid(Tile[,] grid)
+        private static IEnumerable<Tile> GetTilesInGrid(Tile?[,] grid)
         {
             for (var i = 0; i < grid.GetLength(0); i++)
             {
                 for (var j = 0; j < grid.GetLength(1); j++)
                 {
                     if (grid[i, j] != null)
-                        yield return grid[i, j];
+                        yield return grid[i, j]!;
                 }
             }
         }
@@ -446,7 +441,7 @@ namespace AoC.Year2020.Day20
         private static Tile[,] BuildGrid(List<Tile> tiles)
         {
             var gridSize = (int)Math.Sqrt(tiles.Count);
-            var grid = new Tile[gridSize, gridSize];
+            var grid = new Tile?[gridSize, gridSize];
 
             for (var i = 0; i < gridSize; i++)
             {
@@ -468,7 +463,7 @@ namespace AoC.Year2020.Day20
                             rotation = 270;
 
                         grid[i, j] = Tile.RotateTile(first, rotation);
-                        Trace.WriteLine($"{i},{j}: [{grid[i, j].Id}]");
+                        Trace.WriteLine($"{i},{j}: [{grid[i, j]!.Id}]");
                     }
                     else
                     {
@@ -489,7 +484,7 @@ namespace AoC.Year2020.Day20
                                 ? TilePosition.Edge
                                 : TilePosition.Center;
 
-                        var previousTile = grid[iPrev, jPrev];
+                        var previousTile = grid[iPrev, jPrev]!;
                         var included = GetTilesInGrid(grid).Select(x => x.Id);
 
                         var valid = false;
@@ -508,15 +503,15 @@ namespace AoC.Year2020.Day20
                             }
                         }
 
-                        Trace.WriteLine($"{i},{j}: [{grid[i, j].Id} ({grid[i, j].Position})] (prev was {grid[iPrev, jPrev].Id})");
+                        Trace.WriteLine($"{i},{j}: [{grid[i, j]!.Id} ({grid[i, j]!.Position})] (prev was {grid[iPrev, jPrev]!.Id})");
 
                         Assert.IsTrue(valid);
                     }
                 }
             }
 
-            Assert.IsTrue(ValidateGrid(grid));
-            return grid;
+            Assert.IsTrue(ValidateGrid(grid!));
+            return grid!;
         }
 
         private static bool ValidateGrid(Tile[,] grid)
@@ -533,7 +528,7 @@ namespace AoC.Year2020.Day20
             return valid;
         }
 
-        private static bool ValidateTileInGrid(Tile[,] grid, int i, int j, out int checks, out int matches)
+        private static bool ValidateTileInGrid(Tile?[,] grid, int i, int j, out int checks, out int matches)
         {
             var tile = grid[i, j];
             if (tile == null)
@@ -547,7 +542,7 @@ namespace AoC.Year2020.Day20
             var numMatches = 0;
             var foundNull = false;
 
-            void ValidateOrientation(Tile other, TileOrientation orientation)
+            void ValidateOrientation(Tile? other, TileOrientation orientation)
             {
                 if (other == null)
                 {

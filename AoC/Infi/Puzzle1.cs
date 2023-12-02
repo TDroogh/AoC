@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace AoC.Infi
+﻿namespace AoC.Infi
 {
     [TestClass]
     public class Year2020

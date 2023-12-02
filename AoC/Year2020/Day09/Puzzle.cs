@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace AoC.Year2020.Day09
+﻿namespace AoC.Year2020.Day09
 {
     [TestClass]
     public class Puzzle

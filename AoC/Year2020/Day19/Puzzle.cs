@@ -1,20 +1,13 @@
-using AoC.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AoC.Year2020.Day19
 {
     [TestClass]
     public class Puzzle
     {
-        private class Rule
+        private record Rule
         {
-            public int Nr { get; set; }
-
-            public char Character { get; set; }
-            public int[][] SubRuleSets { get; set; }
+            public required int Nr { get; init; }
+            public char? Character { get; set; }
+            public int[][]? SubRuleSets { get; set; }
 
             public static Rule Parse(string line)
             {
@@ -72,7 +65,7 @@ namespace AoC.Year2020.Day19
                 }
 
                 var totalSuccess = new List<string>();
-                foreach (var ruleSet in SubRuleSets)
+                foreach (var ruleSet in SubRuleSets!)
                 {
                     var successLeftovers = new[] { line };
 
