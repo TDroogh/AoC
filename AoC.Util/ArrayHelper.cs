@@ -85,7 +85,7 @@ namespace AoC.Util
                 .Union(GetPointsBetween(top, left));
         }
 
-        public static IEnumerable<(int, int)> GetAdjacentPoints<T>(this T[,] input, int x, int y, bool includeDiagonal)
+        public static IEnumerable<(int x, int y)> GetAdjacentPoints<T>(this T[,] input, int x, int y, bool includeDiagonal)
         {
             foreach (var (dx, dy) in new[] { (0, -1), (-1, 0), (0, 1), (1, 0) })
             {
