@@ -139,12 +139,11 @@ namespace AoC.Year2023.Day05
         private object SolvePuzzle(Input input)
         {
             var minValue = long.MaxValue;
-            var mappings = input.Mappings.Select(m => m.Mappings);
+            var mappings = input.Mappings.Select(m => m.Mappings).ToList();
 
             foreach (var value in input.Numbers)
             {
                 var currentValue = value;
-                var i = 0;
 
                 foreach (var mapping in mappings)
                 {
