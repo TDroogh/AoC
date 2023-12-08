@@ -1,5 +1,3 @@
-using Xunit.Abstractions;
-
 namespace AoC.Year2023.Day08
 {
     public class Puzzle(ITestOutputHelper helper)
