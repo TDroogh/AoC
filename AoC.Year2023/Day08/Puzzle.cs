@@ -123,9 +123,9 @@ namespace AoC.Year2023.Day08
             {
                 var numberOfSteps = GetNumberOfSteps(network, node, true);
 
-                helper.WriteLine($"{node.Identifier}: {numberOfSteps} steps, result {result}");
-
                 result = MathHelper.LeastCommonMultiple(result, numberOfSteps);
+
+                helper.WriteLine($"{node.Identifier}: {numberOfSteps} steps, result {result}");
             }
 
             return result;

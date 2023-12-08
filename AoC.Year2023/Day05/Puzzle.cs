@@ -59,9 +59,22 @@ namespace AoC.Year2023.Day05
                 }
             }
 
+            public static IEnumerable<(long start, long end)> GetReverseInput(string[] lines)
+            {
+                var input = lines[0].Replace("seeds: ", "").Split(" ").Select(long.Parse).ToArray();
+
+                for (var i = 0; i < input.Length / 2; i++)
+                {
+                    var i1 = input[i * 2];
+                    var i2 = input[i * 2 + 1];
+
+                    yield return (i1, i2 + i1);
+                }
+            }
+
             public static List<MappingList> ParseMappings(string[] lines)
             {
-                var mappings = new List<List<Mapping>>();
+                var mappings = new List<MappingList>();
                 var list = new List<string>();
 
                 for (var i = 2; i < lines.Length; i++)
@@ -69,12 +82,12 @@ namespace AoC.Year2023.Day05
                     var line = lines[i];
                     if (string.IsNullOrWhiteSpace(line))
                     {
-                        var mapping = list.Skip(1).Select(Mapping.Parse).OrderBy(x => x.SourceStart).ToList();
-                        mapping.ForEach(val =>
+                        mappings.Add(new MappingList
                         {
-                            val.NextMapping = mapping.Find(m => m.SourceEnd == val.SourceStart);
+                            Mappings = list.Skip(1).Select(Mapping.Parse).OrderBy(x => x.DestinationEnd).ToList(),
+                            LastMapping = null,
+                            Name = list[0]
                         });
-                        mappings.Add(mapping);
 
                         list = new List<string>();
                     }
@@ -84,45 +97,51 @@ namespace AoC.Year2023.Day05
                     }
                 }
 
-                var m = list.Skip(1).Select(Mapping.Parse).ToList();
+                var m = new MappingList
+                {
+                    Mappings = list.Skip(1).Select(Mapping.Parse).OrderBy(x => x.DestinationEnd).ToList(),
+                    LastMapping = null,
+                    Name = list[0]
+                };
+
                 mappings.Add(m);
 
-                return mappings.Select(x => new MappingList { Mappings = x, LastMapping = null }).ToList();
+                return mappings;
             }
         }
 
         public record MappingList
         {
+            public required string Name { get; set; }
             public required Mapping? LastMapping { get; set; }
             public required List<Mapping> Mappings { get; init; }
         }
 
-        public record Mapping
+        public class Mapping
         {
             public long DestinationStart { get; init; }
+            public long DestinationEnd { get; init; }
             public long SourceStart { get; init; }
             public long SourceEnd { get; init; }
-            public long Length { get; init; }
 
-            public Mapping? NextMapping { get; set; }
-
-            public bool ContainsValue(long value)
+            public bool ContainsReverseValue(long value)
             {
-                return SourceStart <= value && SourceEnd > value;
+                return DestinationStart <= value && DestinationEnd > value;
             }
 
             public static Mapping Parse(string val)
             {
                 var split = val.Split(' ');
                 var sourceStart = long.Parse(split[1]);
+                var destinationStart = long.Parse(split[0]);
                 var length = long.Parse(split[2]);
 
                 return new Mapping
                 {
-                    DestinationStart = long.Parse(split[0]),
+                    DestinationStart = destinationStart,
                     SourceStart = sourceStart,
-                    Length = length,
-                    SourceEnd = sourceStart + length
+                    SourceEnd = sourceStart + length,
+                    DestinationEnd = destinationStart + length
                 };
             }
         }
@@ -183,63 +202,61 @@ namespace AoC.Year2023.Day05
 
         #region Puzzle 2
 
-        private object SolvePuzzle2(string[] lines)
+        private object ReverseSolvePuzzle2(string[] lines)
         {
+            var inputs = Input.GetReverseInput(lines).ToList();
             var mappings = Input.ParseMappings(lines);
+            mappings.Reverse();
+
             var minValue = long.MaxValue;
 
-            long i = 0;
+            long last = 0;
+            long found = 0;
+            long notFound = 0;
 
-            //helper.WriteLine(Input.GetInput2(lines).LongCount().ToString());
             var start = DateTime.UtcNow;
-            foreach (var value in Input.GetInput2(lines))
+            for (long i = 0; i < long.MaxValue; i++)
             {
-                var currentValue = value;
-
-                if (value == -1)
-                {
-                    mappings.ForEach(m => m.LastMapping = null);
-                    continue;
-                }
-
+                var currentValue = i;
                 foreach (var mapping in mappings)
                 {
                     Mapping? map = null;
 
                     if (mapping.LastMapping != null)
                     {
-                        if (mapping.LastMapping.ContainsValue(currentValue))
+                        if (mapping.LastMapping.ContainsReverseValue(currentValue))
                         {
                             map = mapping.LastMapping;
-                        }
-                        else if (mapping.LastMapping.NextMapping?.ContainsValue(currentValue) == true)
-                        {
-                            map = mapping.LastMapping.NextMapping;
+                            last++;
                         }
                     }
 
                     if (map == null)
                     {
-                        map = mapping.Mappings.Find(val => val.ContainsValue(currentValue));
+                        map = mapping.Mappings.Find(val => val.ContainsReverseValue(currentValue));
                         mapping.LastMapping = map;
+                        found++;
                     }
 
                     if (map != null)
                     {
-                        currentValue = map.DestinationStart + currentValue - map.SourceStart;
+                        currentValue = map.SourceStart + currentValue - map.DestinationStart;
+                    }
+                    else
+                    {
+                        notFound++;
                     }
                 }
 
-                if (i % 100000000 == 0)
+                if (i % 10000000 == 0)
                 {
-                    helper.WriteLine($"{DateTime.UtcNow - start:g} {i}: Start {value}; end {currentValue}");
+                    helper.WriteLine($"{DateTime.UtcNow - start:g} {i}: Start {i}; end {currentValue} (last: {last}, found: {found}, not: {notFound})");
                 }
 
-                if (currentValue < minValue)
+                if (inputs.Exists(val => currentValue >= val.start && currentValue < val.end))
                 {
-                    minValue = currentValue;
+                    return i;
                 }
-                i++;
             }
 
             return minValue;
@@ -249,7 +266,7 @@ namespace AoC.Year2023.Day05
         public void Setup2()
         {
             var input = InputReader.ReadInput();
-            var result = SolvePuzzle2(input);
+            var result = ReverseSolvePuzzle2(input);
             Assert.Equal(Results.Setup2, result);
         }
 
@@ -257,7 +274,7 @@ namespace AoC.Year2023.Day05
         public void Puzzle2()
         {
             var input = InputReader.ReadInput();
-            var result = SolvePuzzle2(input);
+            var result = ReverseSolvePuzzle2(input);
             Assert.Equal(Results.Puzzle2, result);
         }
 
