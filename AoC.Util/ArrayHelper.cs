@@ -113,17 +113,17 @@ namespace AoC.Util
             }
         }
 
-        public static void Print<T>(this T[,] array, bool withBraces = true, Action<string>? printAction = null)
+        public static void Print<T>(this T[,] array, bool withBraces = true, Action<string>? printAction = null, int padding = 2)
         {
             printAction ??= Console.WriteLine;
 
-            printAction("".PadLeft(array.GetLength(1), '='));
-            for (var x = 0; x < array.GetLength(0); x++)
+            printAction("".PadLeft(array.GetLength(0), '='));
+            for (var x = 0; x < array.GetLength(1); x++)
             {
                 var line = new StringBuilder();
-                for (var y = 0; y < array.GetLength(1); y++)
+                for (var y = 0; y < array.GetLength(0); y++)
                 {
-                    var toPrint = withBraces ? $"[{array[x, y],2}]" : array[x, y]!.ToString();
+                    var toPrint = withBraces ? $"[{array[y, x]?.ToString()?.PadLeft(padding)}]" : array[y, x]!.ToString();
                     line.Append(toPrint);
                 }
 
